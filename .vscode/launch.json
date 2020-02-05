@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DrHelpApplication",
+            "request": "launch",
+            "mainClass": "com.ftn.dr_help.DrHelpApplication",
+            "projectName": "dr_help"
+        }
+    ]
+}
