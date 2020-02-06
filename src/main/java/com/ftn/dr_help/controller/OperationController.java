@@ -25,7 +25,6 @@ import com.ftn.dr_help.dto.operations.DoctorOperationDTO;
 import com.ftn.dr_help.dto.ThreeDoctorsIdDTO;
 import com.ftn.dr_help.service.OperationService;
 
-@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RestController
 @RequestMapping (value = "api/operations")
 public class OperationController {

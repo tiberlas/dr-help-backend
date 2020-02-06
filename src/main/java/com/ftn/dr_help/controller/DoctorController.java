@@ -42,7 +42,6 @@ import com.ftn.dr_help.service.DoctorService;
 
 @RestController
 @RequestMapping(value = "api/doctors")
-@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 public class DoctorController {
 
 	@Autowired

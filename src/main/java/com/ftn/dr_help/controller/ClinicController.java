@@ -36,7 +36,6 @@ import com.ftn.dr_help.service.ClinicService;
 import com.ftn.dr_help.service.ProcedureTypeService;
 
 @RestController
-@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping(value = "/api/clinics")
 public class ClinicController {
 

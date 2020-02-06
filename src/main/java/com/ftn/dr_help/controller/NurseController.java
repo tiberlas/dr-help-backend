@@ -37,7 +37,6 @@ import com.ftn.dr_help.service.PerscriptionService;
 
 @RestController
 @RequestMapping(value = "api/nurses")
-@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 public class NurseController {
 	
 	@Autowired

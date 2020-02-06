@@ -16,7 +16,6 @@ import com.ftn.dr_help.dto.PatientHealthRecordDTO;
 import com.ftn.dr_help.service.PatientService;
 
 @RestController
-@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping(value = "/api/healthRecord")
 public class HealthRecordController {
 	
