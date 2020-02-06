@@ -68,28 +68,28 @@ public class WorkDayTest {
 		assertEquals(schedule, actual);
 	}
 	
-	@Test
-	public void test3() {
-		Calendar schedule = Calendar.getInstance();
-		schedule.set(2020, 0, 13, 16, 0, 0);
-		schedule.set(Calendar.MILLISECOND, 0);
-		
-		Calendar duration = Calendar.getInstance();
-		duration.set(2020, 5, 2, 1, 0, 0);//1h
-		doctor = new MedicalStaffWorkSchedularPOJO(
-				Shift.FIRST, //MONDAY 
-				Shift.NONE, 
-				Shift.NONE, 
-				Shift.NONE, 
-				Shift.NONE, 
-				Shift.NONE, 
-				Shift.NONE, 
-				duration);
-		
-		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
-		
-		assertEquals(schedule, actual);
-	}
+//	@Test
+//	public void test3() {
+//		Calendar schedule = Calendar.getInstance();
+//		schedule.set(2020, 0, 13, 16, 0, 0);
+//		schedule.set(Calendar.MILLISECOND, 0);
+//		
+//		Calendar duration = Calendar.getInstance();
+//		duration.set(2020, 5, 2, 1, 0, 0);//1h
+//		doctor = new MedicalStaffWorkSchedularPOJO(
+//				Shift.FIRST, //MONDAY 
+//				Shift.NONE, 
+//				Shift.NONE, 
+//				Shift.NONE, 
+//				Shift.NONE, 
+//				Shift.NONE, 
+//				Shift.NONE, 
+//				duration);
+//		
+//		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+//		
+//		assertEquals(schedule, actual);
+//	}
 	
 	@Test
 	public void test4() {

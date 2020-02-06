@@ -17,3 +17,13 @@ deploy:
   provider: heroku
   api_key: $HEROKU_API_KEY
   app: dr-help-backend
+  
+addons:
+  sonarcloud:
+    organization: "tiberlas"
+    token:
+      secure: $SONAR_TOKEN # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar

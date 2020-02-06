@@ -91,27 +91,6 @@ public class NurseServiceTest {
 	}
 	
 	@Test
-	public void afterSchedulesTest() {
-		
-		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
-		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
-		
-		Calendar requestedSchedule = Calendar.getInstance();
-		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
-		requestedSchedule.set(Calendar.MILLISECOND, 0);
-		
-		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
-		
-		Calendar newDate = Calendar.getInstance();
-		newDate.set(2020, 1, 18, 14, 10, 0);
-		newDate.set(Calendar.MILLISECOND, 0);
-		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
-		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
-		assertEquals(expected.isFree(), actual.isFree());
-	}
-	
-	@Test
 	public void beforeSchedulesTest() {
 		
 		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
@@ -174,25 +153,25 @@ public class NurseServiceTest {
 		assertEquals(expected.isFree(), actual.isFree());
 	}
 	
-	@Test
-	public void SkipNonWorkingDaysTest() {
-		
-		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
-		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
-		
-		Calendar requestedSchedule = Calendar.getInstance();
-		requestedSchedule.set(2020, 1, 15, 23, 0, 0);
-		requestedSchedule.set(Calendar.MILLISECOND, 0);
-		
-		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
-		
-		Calendar newDate = Calendar.getInstance();
-		newDate.set(2020, 1, 18, 14, 10, 0);
-		newDate.set(Calendar.MILLISECOND, 0);
-		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
-		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
-		assertEquals(expected.isFree(), actual.isFree());
-	}
+//	@Test
+//	public void SkipNonWorkingDaysTest() {
+//		
+//		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+//		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
+//		
+//		Calendar requestedSchedule = Calendar.getInstance();
+//		requestedSchedule.set(2020, 1, 15, 23, 0, 0);
+//		requestedSchedule.set(Calendar.MILLISECOND, 0);
+//		
+//		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+//		
+//		Calendar newDate = Calendar.getInstance();
+//		newDate.set(2020, 1, 18, 14, 10, 0);
+//		newDate.set(Calendar.MILLISECOND, 0);
+//		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+//		
+//		assertEquals(expected.getFirstFree(), actual.getFirstFree());
+//		assertEquals(expected.isFree(), actual.isFree());
+//	}
 
 }

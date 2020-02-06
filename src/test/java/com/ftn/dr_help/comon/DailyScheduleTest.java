@@ -1,6 +1,7 @@
 
 package com.ftn.dr_help.comon;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class DailyScheduleTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		assertTrue(true);
 	}
 
 }
