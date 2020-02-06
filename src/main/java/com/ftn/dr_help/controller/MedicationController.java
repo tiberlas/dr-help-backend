@@ -21,7 +21,7 @@ import com.ftn.dr_help.model.pojo.MedicationPOJO;
 import com.ftn.dr_help.service.MedicationService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping (value = "api/medication")
 public class MedicationController {
 

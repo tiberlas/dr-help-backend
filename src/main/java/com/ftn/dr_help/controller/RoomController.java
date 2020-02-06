@@ -26,7 +26,7 @@ import com.ftn.dr_help.service.RoomService;
 
 @RestController
 @RequestMapping(value = "api/rooms")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 public class RoomController {
 	
 	@Autowired

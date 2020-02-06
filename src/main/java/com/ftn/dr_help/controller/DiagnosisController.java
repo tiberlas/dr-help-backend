@@ -21,7 +21,7 @@ import com.ftn.dr_help.service.DiagnosisService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping (value = "api/diagnoses")
 public class DiagnosisController {
 

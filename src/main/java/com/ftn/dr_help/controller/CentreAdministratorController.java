@@ -31,7 +31,7 @@ import com.ftn.dr_help.service.CentreAdministratorService;
 import com.ftn.dr_help.service.PatientService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping(value = "api/centreAdmins")
 @PreAuthorize("hasAuthority('CENTRE_ADMINISTRATOR')") //authority level on the hole controller
 public class CentreAdministratorController {

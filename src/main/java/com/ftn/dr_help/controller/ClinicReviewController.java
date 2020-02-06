@@ -14,7 +14,7 @@ import com.ftn.dr_help.service.ClinicReviewService;
 
 @RestController
 @RequestMapping(value = "api/clinic_raithing")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 public class ClinicReviewController {
 
 	@Autowired

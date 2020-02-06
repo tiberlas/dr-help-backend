@@ -23,7 +23,7 @@ import com.ftn.dr_help.dto.ProcedureTypeInfoDTO;
 import com.ftn.dr_help.service.ProcedureTypeService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = com.ftn.dr_help.comon.CrossOrigin.domen)
 @RequestMapping(value = "/api/procedure+types")
 public class ProcedureTypeController {
 
