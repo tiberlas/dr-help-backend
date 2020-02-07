@@ -16,7 +16,7 @@ addons:
       secure: $SONAR_TOKEN # encrypted value of your token
 
 script:
-  - ./mvnw clean install -DskipTests=false -B
+  - ./mvnw clean install -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -DskipTests=false -B
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
