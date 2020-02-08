@@ -15,7 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -84,7 +83,7 @@ public class DoctorPOJO implements Serializable{
 	//@ManyToMany 
 	//@JoinTable (name = "operating", joinColumns = @JoinColumn (name = "doctor_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn (name = "operations_id", referencedColumnName = "id"))
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<OperationPOJO> operationList;
+	private List<OperationPOJO> operations;
 
 	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private ProceduresTypePOJO procedureType;
@@ -222,11 +221,11 @@ public class DoctorPOJO implements Serializable{
 	}
 
 	public List<OperationPOJO> getOperationList() {
-		return operationList;
+		return operations;
 	}
 
 	public void setOperationList(List<OperationPOJO> operationList) {
-		this.operationList = operationList;
+		this.operations = operationList;
 
 	}
 

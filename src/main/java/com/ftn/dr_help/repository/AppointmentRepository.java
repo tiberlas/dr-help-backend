@@ -58,6 +58,11 @@ public interface AppointmentRepository extends JpaRepository<AppointmentPOJO, Lo
 	@Query (value = "update appointments set deleted = true where id = ?1", nativeQuery = true)
 	public void deleteAppointment (Long appointmentId);
 	
+	@Modifying
+	@Query (value = "update appointments set patient_id = null, status = 'AVAILABLE' where id = ?1", nativeQuery = true)
+	public void cancelAppointment (Long appointmentId);
+	
+	
 	@Query( value = "select distinct a.* from doctors d inner join doctor_requested dr on (d.id = dr.doctor_id) inner join appointments a on (a.id = dr.appointment_id) where d.email= ?1 and a.id= ?2", nativeQuery = true)
 	AppointmentPOJO getRequestedAppointment(String doctorEmail, Long id);
 

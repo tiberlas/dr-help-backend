@@ -20,7 +20,7 @@ public interface DoctorRepository extends JpaRepository<DoctorPOJO, Long> {
 	
 	public Optional<DoctorPOJO> findById (Long id);
 
-	@Query (value = "select d.* from doctors d inner join procedures_type pt on d.procedure_type_id = pt.id where d.clinic_id = ?1 and pt.\"name\" = ?2", nativeQuery = true)
+	@Query (value = "select d.* from doctors d inner join procedures_type pt on d.procedure_type_id = pt.id where d.clinic_id = ?1 and pt.name = ?2", nativeQuery = true)
 	public List<DoctorPOJO> filterByClinicAndProcedureType (Long clinicId, String procedureType);
 	
 

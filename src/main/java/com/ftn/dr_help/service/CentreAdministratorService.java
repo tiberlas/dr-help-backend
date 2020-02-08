@@ -158,7 +158,6 @@ public class CentreAdministratorService {
 	public UserRequestPOJO acceptRequest(PatientRequestDTO patientDTO) throws Exception {
 		UserRequestPOJO requested = userRequestRepository.findByEmail(patientDTO.getEmail());
 		
-		
 		PatientPOJO p = new PatientPOJO();
 		p.setActivated(false);
 		p.setEmail(requested.getEmail());

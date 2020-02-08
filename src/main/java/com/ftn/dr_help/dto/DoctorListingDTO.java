@@ -20,6 +20,8 @@ public class DoctorListingDTO {
 	private String rating = "Ma doktor, bre!";
 	private Long id;
 	private List<String> terms = new ArrayList<String> ();
+	
+	
 	public DoctorListingDTO() {
 		super();
 	}

@@ -30,6 +30,7 @@ import com.ftn.dr_help.model.pojo.ExaminationReportPOJO;
 import com.ftn.dr_help.model.pojo.HealthRecordPOJO;
 import com.ftn.dr_help.model.pojo.MedicationPOJO;
 import com.ftn.dr_help.model.pojo.NursePOJO;
+import com.ftn.dr_help.model.pojo.OperationPOJO;
 import com.ftn.dr_help.model.pojo.PatientPOJO;
 import com.ftn.dr_help.model.pojo.PerscriptionPOJO;
 import com.ftn.dr_help.model.pojo.TherapyPOJO;
@@ -40,6 +41,7 @@ import com.ftn.dr_help.repository.DoctorRepository;
 import com.ftn.dr_help.repository.ExaminationReportRepository;
 import com.ftn.dr_help.repository.HealthRecordRepository;
 import com.ftn.dr_help.repository.NurseRepository;
+import com.ftn.dr_help.repository.OperationRepository;
 import com.ftn.dr_help.repository.PatientRepository;
 import com.ftn.dr_help.repository.UserRequestRepository;
 import com.ftn.dr_help.validation.PasswordValidate;
@@ -76,6 +78,9 @@ public class PatientService {
 	
 	@Autowired
 	private AppPasswordEncoder encoder;
+	
+	@Autowired
+	private OperationRepository operationRepository;
 	
 	private DateConverter dateConverter = new DateConverter ();
 	
@@ -294,6 +299,29 @@ public class PatientService {
 			appointments.add(retValItem);
 		}
 		
+		List<OperationPOJO> operations;
+		operations = operationRepository.getPatientsDoneOperations(patient.getId(), Calendar.getInstance());
+		
+		for (OperationPOJO o : operations) {
+			PatientHistoryDTO retValItem = new PatientHistoryDTO();
+			
+			retValItem.setExaminationReportId(o.getId());
+			
+			String date = "" + o.getDate().get(Calendar.DAY_OF_MONTH) + ".";
+			date += (o.getDate().get(Calendar.MONTH) + 1) + ".";
+			date += o.getDate().get(Calendar.YEAR) + ". ";
+			date += o.getDate().get(Calendar.HOUR_OF_DAY) + ":";
+			date += o.getDate().get(Calendar.MINUTE);
+			
+			retValItem.setDate(date);
+			retValItem.setProcedureType(o.getOperationType().getName());
+			retValItem.setDoctor(o.getFirstDoctor().getFirstName() + " " + o.getFirstDoctor().getLastName());
+			retValItem.setClinicName(o.getOperationType().getClinic().getName());
+			retValItem.setClinicId(o.getOperationType().getClinic().getId());
+			retValItem.setDoctorId(o.getFirstDoctor().getId());
+			appointments.add(retValItem);
+		}
+		
 		if (appointments.size() > 0) {
 			retVal.setAppointmentList(appointments);
 			
@@ -311,6 +339,15 @@ public class PatientService {
 					dateList.add(p.getDate().split(" ")[0]);
 				}
 			}
+			
+			System.out.println("");
+			System.out.println("");
+			for (String date : dateList) {
+				System.out.println("Date: " + date);
+			}
+			System.out.println("");
+			System.out.println("");
+			
 			retVal.setPossibleDates (dateList);
 			
 			List<String> doctorList = new ArrayList<String> ();
@@ -750,12 +787,14 @@ public class PatientService {
 		PatientHealthRecordDTO retVal = new PatientHealthRecordDTO();
 		
 		retVal.setBirthday(patient.getBirthday().getTime());
-		retVal.setBloodType(healthRecord.getBloodType());
-		retVal.setDiopter(healthRecord.getDiopter());
+		if (healthRecord != null) {
+			retVal.setHeight(healthRecord.getHeight());
+			retVal.setBloodType(healthRecord.getBloodType());
+			retVal.setDiopter(healthRecord.getDiopter());
+			retVal.setWeight(healthRecord.getWeight());
+		}
 		retVal.setFirstName(patient.getFirstName());
-		retVal.setHeight(healthRecord.getHeight());
 		retVal.setLastName(patient.getLastName());
-		retVal.setWeight(healthRecord.getWeight());
 		retVal.setAllergyList(list);
 		return retVal;
 	}
@@ -781,8 +820,8 @@ public class PatientService {
 		p.setHealthRecord(healthRecord);
 		
 		patientRepository.save(p);
-		healthRecord.setPatient(p);
-		healthRecordRepository.save(healthRecord);
+//		healthRecord.setPatient(p);
+//		healthRecordRepository.save(healthRecord);
 		
 		System.out.println("Health record created.");
 		return p;

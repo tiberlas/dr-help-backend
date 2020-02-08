@@ -1,5 +1,6 @@
 package com.ftn.dr_help.repository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,4 +52,7 @@ public interface OperationRepository extends JpaRepository<OperationPOJO, Long> 
 	@Query(value = "select o.* from operations o where o.status = 'REQUESTED' and o.deleted = false order by o.id;", nativeQuery = true)
 	public List<OperationPOJO> getAllOperationRequests();
 
+	@Query(value="select * from operations o where status = 'APPROVED' and patient_id = ?1 and date < ?2", nativeQuery = true)
+	public List<OperationPOJO> getPatientsDoneOperations (Long patientId, Calendar date);
+	
 }

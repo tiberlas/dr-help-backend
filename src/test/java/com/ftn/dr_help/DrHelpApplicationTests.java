@@ -2,7 +2,6 @@
 package com.ftn.dr_help;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +16,18 @@ public class DrHelpApplicationTests {
 
 	@Test
 	public void shouldNotPass() {
-		assertTrue(true);
+		NursePOJO nurse = new NursePOJO();
+		nurse.setFirstName("ANA");
+
+		assertEquals("ANA", nurse.getFirstName());
 	}
 
+	@Test
+	public void shouldPass() {
+		NursePOJO nurse = new NursePOJO();
+		nurse.setFirstName("ANA");
+
+		assertEquals("ANA", nurse.getFirstName());
+	}
 	
 }

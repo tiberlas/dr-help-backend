@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import com.ftn.dr_help.model.enums.OperationStatus;
 
@@ -60,6 +61,9 @@ public class OperationPOJO implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column (name = "status", nullable = false)
 	private OperationStatus status;
+	
+	@Version
+	private Long version;
 	
 	private boolean deleted;
 	

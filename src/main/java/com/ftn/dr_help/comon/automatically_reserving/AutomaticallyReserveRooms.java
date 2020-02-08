@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.dr_help.dto.NurseWIthFirstFreeDateInnerDTO;
+import com.ftn.dr_help.model.enums.AppointmentStateEnum;
 import com.ftn.dr_help.model.pojo.AppointmentPOJO;
 import com.ftn.dr_help.model.pojo.OperationPOJO;
 import com.ftn.dr_help.repository.AppointmentRepository;
@@ -43,7 +45,7 @@ public class AutomaticallyReserveRooms {
 	private DoctorService doctorService;
 	
 	@Scheduled(cron="59 59 23 * * ?")
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	public void runAtMidnight() {
 		/*
 		 * u ponoc se pokrece funkcija i svi appointmentimenti se automatski blagosiljaju 
@@ -91,13 +93,22 @@ public class AutomaticallyReserveRooms {
 					requestedTime = (Calendar) freeRoomWithDate.getRecomendedDate().clone();
 				}
 				
+				appointment.setDate(requestedTime);
+				appointment.setDoctor(doctorWithDate.getDoctor());
+				appointment.setNurse(nurseWithDate.getNurse());
+				appointment.setRoom(freeRoomWithDate.getFreeRoom());
+				appointment.setDeleted(false);
+				
+				if(appointment.getStatus() == AppointmentStateEnum.REQUESTED) {
+					appointment.setStatus(AppointmentStateEnum.BLESSED);
+				} else {
+					appointment.setStatus(AppointmentStateEnum.APPROVED);
+				}
+				
+				appointmentRepository.save(appointment);
+				
 				//potvrdjujemo pregled
-				blessing.scheduleAndSendMail(
-						appointment, 
-						doctorWithDate.getDoctor(), 
-						nurseWithDate.getNurse(), 
-						freeRoomWithDate.getFreeRoom(), 
-						requestedTime);
+				blessing.scheduleAndSendMail(appointment);
 				
 			}
 		

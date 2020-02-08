@@ -25,6 +25,7 @@ import com.ftn.dr_help.dto.operations.DoctorOperationDTO;
 import com.ftn.dr_help.dto.ThreeDoctorsIdDTO;
 import com.ftn.dr_help.service.OperationService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping (value = "api/operations")
 public class OperationController {
@@ -98,18 +99,23 @@ public class OperationController {
 	@PostMapping(value = "/schedules/bless", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasAuthority('CLINICAL_ADMINISTRATOR')")
 	public ResponseEntity<String> blessOperation(@RequestBody OperationBlessingDTO request) {
-			
-		OperationBlessingInnerDTO status = operationServie.blessOperation(request);
 		
-		switch(status.getBlessedLvl()) {
-			case BLESSED:
-				return new ResponseEntity<>(HttpStatus.OK);
-			case DOCTORS_REFUSED:
-				return new ResponseEntity<>("DOCTOR#"+status.getRecomendedDate(), HttpStatus.CONFLICT);//409
-			case ROOM_REFUSED:
-				return new ResponseEntity<>("ROOM#"+status.getRecomendedDate(), HttpStatus.CONFLICT);
-			default:
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//400
+		try {
+			OperationBlessingInnerDTO status = operationServie.blessOperation(request);
+		
+			switch(status.getBlessedLvl()) {
+				case BLESSED:
+					return new ResponseEntity<>(HttpStatus.OK);
+				case DOCTORS_REFUSED:
+					return new ResponseEntity<>("DOCTOR#"+status.getRecomendedDate(), HttpStatus.CONFLICT);//409
+				case ROOM_REFUSED:
+					return new ResponseEntity<>("ROOM#"+status.getRecomendedDate(), HttpStatus.CONFLICT);
+				default:
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//400
+			}
+		} catch(Exception e) {
+			System.out.println("UHVACEN");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	

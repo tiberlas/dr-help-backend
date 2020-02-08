@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.dr_help.comon.DateConverter;
 import com.ftn.dr_help.comon.Mail;
@@ -285,6 +288,7 @@ public class OperationService {
 		}
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	public OperationBlessingInnerDTO blessOperation(OperationBlessingDTO request) {
 		
 		try {
@@ -304,6 +308,11 @@ public class OperationService {
 				
 				//zakazivanje operacije
 				OperationPOJO operation = operationRepository.findOneById(request.getOperationId());
+				
+				if(operation.getRoom() != null) {
+					return new OperationBlessingInnerDTO("", OperationBlessing.ERROR);
+				}
+				
 				operation.setDate(free);
 				operation.setFirstDoctor(doctorRepository.getOne(request.getDoctor0()));
 				operation.setSecondDoctor(doctorRepository.getOne(request.getDoctor1()));
@@ -313,12 +322,13 @@ public class OperationService {
 				RoomPOJO room = roomRepository.findOneById(request.getRoomId());
 				operation.setRoom(room);
 				
+				operationRepository.save(operation);
+
 				mailSender.sendOperationApprovedToDoctorsEmail(operation.getFirstDoctor(), operation);
 				mailSender.sendOperationApprovedToDoctorsEmail(operation.getSecondDoctor(), operation);
 				mailSender.sendOperationApprovedToDoctorsEmail(operation.getThirdDoctor(), operation);
 				mailSender.sendOperationApprovedToPatientEmail(operation);
 				
-				operationRepository.save(operation);
 				return new OperationBlessingInnerDTO("BLESSED", OperationBlessing.BLESSED);
 			} else {
 				return new OperationBlessingInnerDTO(
@@ -327,11 +337,13 @@ public class OperationService {
 						);
 			}
 		} catch (Exception e) {
+			System.out.println("YOU MADA FAKA");
 			e.printStackTrace();
 			return new OperationBlessingInnerDTO("", OperationBlessing.ERROR);
 		}
 	}
 	
+	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
 	public Calendar findFirstOperationSchedule(Long drId0, Long drId1, Long drId2, Calendar begin) {
 		try {
 			DoctorPOJO dr0 = doctorRepository.findById(drId0).orElse(null);
@@ -354,9 +366,8 @@ public class OperationService {
 			System.out.println("----------- first equal shift: " + firstEqualShift.getTime());
 			return firstEqualShift;
 		} catch(Exception e) {
-			System.out.println("EX1 " + e);
+			System.out.println("EX1 ");
 			e.printStackTrace();
-			e.getStackTrace();
 			return null;
 		}
 

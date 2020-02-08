@@ -82,14 +82,17 @@ public class ProcedureTypeService {
 			return null;
 		}
 		
-		ProceduresTypePOJO exist = procedureTypeRepository.findOneByName(newProcedure.getName()).orElse(null);
-		if(exist != null) {
-			return null;
-		}
+		List<ProceduresTypePOJO> list = procedureTypeRepository.findAllByName(newProcedure.getName());
 		
 		ClinicAdministratorPOJO admin = adminRepository.findOneByEmail(email);
 		if(admin == null) {
 			return null;
+		}
+		
+		for (ProceduresTypePOJO p : list) {
+			if (p.getClinic().getId() == admin.getClinic().getId()) {
+				return null;
+			}
 		}
 		
 		ClinicPOJO clinic = admin.getClinic();

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +30,7 @@ import com.ftn.dr_help.service.CentreAdministratorService;
 import com.ftn.dr_help.service.PatientService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "api/centreAdmins")
 @PreAuthorize("hasAuthority('CENTRE_ADMINISTRATOR')") //authority level on the hole controller
 public class CentreAdministratorController {

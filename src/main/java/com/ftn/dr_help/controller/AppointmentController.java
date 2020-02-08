@@ -2,7 +2,6 @@ package com.ftn.dr_help.controller;
 
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,12 @@ import com.ftn.dr_help.comon.CurrentUser;
 import com.ftn.dr_help.comon.Mail;
 import com.ftn.dr_help.dto.AddAppointmentDTO;
 import com.ftn.dr_help.dto.AppointmentDeleteDTO;
-import com.ftn.dr_help.dto.AppointmentListDTO;
 import com.ftn.dr_help.dto.AppointmentForSchedulingDTO;
 import com.ftn.dr_help.dto.AppointmentInternalBlessedDTO;
+import com.ftn.dr_help.dto.AppointmentListDTO;
 import com.ftn.dr_help.dto.DoctorAppointmentDTO;
 import com.ftn.dr_help.dto.DoctorRequestAppointmentDTO;
 import com.ftn.dr_help.dto.ExaminationReportDTO;
-import com.ftn.dr_help.dto.PatientHistoryDTO;
 import com.ftn.dr_help.dto.RequestingAppointmentDTO;
 import com.ftn.dr_help.dto.nurse.NurseAppointmentDTO;
 import com.ftn.dr_help.model.pojo.AppointmentPOJO;
@@ -41,6 +39,7 @@ import com.ftn.dr_help.service.DoctorService;
 import com.ftn.dr_help.service.PatientService;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping (value = "api/appointments/")
 public class AppointmentController {
@@ -102,12 +101,7 @@ public class AppointmentController {
 	@PostMapping (value = "add", consumes = "application/json", produces = "application/json")
 	@PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<Boolean> add (@RequestBody AddAppointmentDTO dto) throws NumberFormatException, ParseException {
-//		try {
-//			TimeUnit.SECONDS.sleep(10);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 		String dateString = dto.getDate() + " " + dto.getTime() + ":00";
 
 		Boolean retVal = appointmentService.addAppointment(Long.parseLong(dto.getDoctorId()), dateString, Long.parseLong(dto.getPatientId()));
@@ -260,8 +254,9 @@ public class AppointmentController {
 				@PathVariable("clinic_id") String clinicId, @PathVariable("app_date") String date) {
 		AppointmentListDTO retVal = appointmentService.getPredefinedAppointments(doctorId, procedureTypeId, clinicId, date);
 		
-		if (retVal.getAppointmentList() == null) {
-			retVal.setAppointmentList(new ArrayList<PatientHistoryDTO> ());
+		if (retVal == null) {
+			 retVal = new AppointmentListDTO();
+			
 		}
 		
 		return new ResponseEntity<> (retVal, HttpStatus.OK);
@@ -282,18 +277,22 @@ public class AppointmentController {
 	@PreAuthorize("hasAuthority('CLINICAL_ADMINISTRATOR')")
 	public ResponseEntity<String> checkAppointemnt(@RequestBody AppointmentForSchedulingDTO appointment) {
 		
-		String adminMeil = currentUser.getEmail();
-		AppointmentInternalBlessedDTO response = blesingService.blessing(appointment, adminMeil);
-		
-		switch(response.getBlessingLvl()) {
-			case BLESSED:
-				return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
-			case BAD_DOCTOR:
-				return new ResponseEntity<>("DOCTOR#"+response.getMessage() , HttpStatus.NOT_ACCEPTABLE); //406
-			case BAD_DATE:
-				return new ResponseEntity<>("DATE#"+response.getMessage(), HttpStatus.NOT_ACCEPTABLE); //406
-			default:
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		try {
+			String adminMeil = currentUser.getEmail();
+			AppointmentInternalBlessedDTO response = blesingService.blessing(appointment, adminMeil);
+			
+			switch(response.getBlessingLvl()) {
+				case BLESSED:
+					return new ResponseEntity<>("OK", HttpStatus.ACCEPTED);
+				case BAD_DATE:
+					return new ResponseEntity<>("DATE#"+response.getMessage(), HttpStatus.NOT_ACCEPTABLE); //406
+				default:
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				case BAD_DOCTOR:
+					return new ResponseEntity<>("DOCTOR#"+response.getMessage() , HttpStatus.NOT_ACCEPTABLE); //406
+			}
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	

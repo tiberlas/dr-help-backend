@@ -42,6 +42,7 @@ import com.ftn.dr_help.service.DoctorService;
 
 @RestController
 @RequestMapping(value = "api/doctors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DoctorController {
 
 	@Autowired
@@ -133,13 +134,7 @@ public class DoctorController {
 		ClinicPOJO clinic = clinicRepository.getOne(clinicId);
 		retVal.setClinicName(clinic.getName());
 		retVal.setAddress(clinic.getAddress());
-		//		System.out.println("Appointment type: " + appointmentType);
 
-		
-		
-		//		System.out.println("Clinic id: " + clinicId);
-//		System.out.println("Date: " + appointmentDate);
-		
 		if (appointmentType.equals("unfiltered") || appointmentDate.equals("unfiltered")) {
 			List<DoctorListingDTO> doctors = service.filterByClinic(clinicId);
 			retVal.setDoctorListing(doctors);
@@ -250,6 +245,18 @@ public class DoctorController {
 	@PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('CLINICAL_ADMINISTRATOR')")
 	public ResponseEntity<List<MedicalStaffNameDTO>> getSpecializedDoctors(@PathVariable("id") Long id) {
 		List<MedicalStaffNameDTO> doctors = service.getSpecializedDoctors(id);
+		
+		if(doctors == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>(doctors, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping(value = "/all/without-nurse/specialization=", produces="application/json")
+	@PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('CLINICAL_ADMINISTRATOR')")
+	public ResponseEntity<List<MedicalStaffNameDTO>> getSpecializedDoctorsWithoutNurse(@PathVariable("id") Long id) {
+		List<MedicalStaffNameDTO> doctors = service.getSpecializedDoctorsWithoutNurse(id);
 		
 		if(doctors == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ftn.dr_help.comon.CurrentUser;
 import com.ftn.dr_help.comon.DateConverter;
 import com.ftn.dr_help.dto.ProcedureIdAndDateDTO;
 import com.ftn.dr_help.dto.RoomCalendarDTO;
@@ -51,6 +53,9 @@ public class RoomService {
 	
 	@Autowired
 	private DateConverter dateConvertor;
+	
+	@Autowired
+	private CurrentUser currentUser;
 	
 	@Transactional(readOnly = true)
 	public List<RoomDTO> findAll(String email) {
@@ -133,12 +138,14 @@ public class RoomService {
 
 		try {
 			
-			RoomPOJO exist = repository.findOneByNumber(newRoom.getNumber()).orElse(null);
-			if(exist != null) {
-				return null;
-			}
-			
 			ClinicAdministratorPOJO admin = adminRepository.findOneByEmail(email);
+			
+			List<RoomPOJO> list = repository.findAllByClinic_id(admin.getClinic().getId());
+			for (RoomPOJO r : list) {
+				if (r.getNumber() == newRoom.getNumber()) {
+					return null;
+				}
+			}
 			
 			ClinicPOJO clinic = admin.getClinic();
 			RoomPOJO room = new RoomPOJO();
@@ -449,6 +456,7 @@ public class RoomService {
 		return findFirstFreeScheduleFromDate(room, begin);
 	}
 	
+	@Transactional(readOnly = true,  propagation = Propagation.MANDATORY)
 	public String findFirstFreeScheduleFromDate(Long roomId, Calendar begin) {
 		try {
 			RoomPOJO room = repository.getOne(roomId);
@@ -460,6 +468,7 @@ public class RoomService {
 		
 	}
 	
+	@Transactional(readOnly = true,  propagation = Propagation.MANDATORY)
 	public Calendar findFirstFreeScheduleFromDateInRawformat(RoomPOJO room, Calendar begin) {
 		/**
 		 * nadje priv slobodan termin za sobu od trenutka (begin)
@@ -520,6 +529,7 @@ public class RoomService {
 	
 	}
 	
+	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
 	public String findFirstFreeScheduleFromDate(RoomPOJO room, Calendar begin) {
 			
 		Calendar finded = findFirstFreeScheduleFromDateInRawformat(room, begin);

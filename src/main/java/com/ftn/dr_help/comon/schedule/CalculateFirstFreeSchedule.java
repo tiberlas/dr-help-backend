@@ -80,10 +80,6 @@ public class CalculateFirstFreeSchedule {
 		Calendar begin = Calendar.getInstance();
 		begin = setWorkingDay(doctor, start, absenceDates);
 		
-		if(begin.compareTo(start) < 0) {
-			
-		}
-		
 		//nadje trajanje za schedule
 		Calendar duration = Calendar.getInstance();
 		duration.setTime(doctor.getDuration().getTime());
@@ -148,7 +144,11 @@ public class CalculateFirstFreeSchedule {
 					if(currentEnd.compareTo(begin) <= 0) {
 						//vratio je za prethodni dan
 						currentEnd.add(Calendar.DAY_OF_MONTH, 1);
-						//niceBeginning.setNiceScheduleBeginning(doctor, currentEnd);
+						currentEnd.set(Calendar.HOUR_OF_DAY, 0);
+						currentEnd.set(Calendar.HOUR, 0);
+						currentEnd.set(Calendar.MINUTE, 0);
+						currentEnd.set(Calendar.SECOND, 0);
+						currentEnd.set(Calendar.MILLISECOND, 0);
 						currentEnd = setWorkingDay(doctor, currentEnd, absenceDates);
 					}
 				}
@@ -182,42 +182,7 @@ public class CalculateFirstFreeSchedule {
 			//datum je dobar
 			return date;
 		}
-		
-//		Calendar oldDate = Calendar.getInstance();
-//		do {
-//			oldDate = (Calendar) date.clone();
-//			niceBeginning.setNiceScheduleBeginning(doctor, date);
-//			
-//			if(oldDate.before(date)) {
-//				date.add(Calendar.DAY_OF_MONTH, 1);
-//				date.set(Calendar.AM_PM, Calendar.AM);
-//				date.set(Calendar.HOUR, 0);
-//				date.set(Calendar.MINUTE, 0);
-//				date.set(Calendar.MILLISECOND, 0);
-//				date.set(Calendar.SECOND, 0);
-//				niceBeginning.setNiceScheduleBeginning(doctor, date);
-//			}
-//		} while(!checkWorkingDay(doctor, date, absenceDates));
-//		
-//		if(!shift.checkShift(date, doctor)) {
-//			date.add(Calendar.DAY_OF_YEAR, 1);
-//			date.set(Calendar.HOUR_OF_DAY, 0);
-//			date.set(Calendar.MINUTE, 0);
-//			date.set(Calendar.MILLISECOND, 0);
-//			date.set(Calendar.SECOND, 0);
-//		}
-//		niceBeginning.setNiceScheduleBeginning(doctor, date);
-//
-//		while(!checkWorkingDay(doctor, date, absenceDates)) {
-//
-//			date.add(Calendar.DAY_OF_YEAR, 1);
-//			date.set(Calendar.HOUR_OF_DAY, 0);
-//			date.set(Calendar.MINUTE, 0);
-//			date.set(Calendar.MILLISECOND, 0);
-//			date.set(Calendar.SECOND, 0);
-//			niceBeginning.setNiceScheduleBeginning(doctor, date);
-//		}
-			
+
 		Calendar oldDate = Calendar.getInstance();
 		oldDate = (Calendar) date.clone();
 		
@@ -254,7 +219,7 @@ public class CalculateFirstFreeSchedule {
 		 * */
 		Calendar begin = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
-		if(absenceDates != null) {
+		if(absenceDates != null && !absenceDates.isEmpty()) {
 			for(AbsenceInnerDTO absence : absenceDates) {
 				begin.setTime(absence.getBeginning());
 				begin.set(Calendar.AM_PM, Calendar.AM);

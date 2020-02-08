@@ -68,28 +68,28 @@ public class WorkDayTest {
 		assertEquals(schedule, actual);
 	}
 	
-//	@Test
-//	public void test3() {
-//		Calendar schedule = Calendar.getInstance();
-//		schedule.set(2020, 0, 13, 16, 0, 0);
-//		schedule.set(Calendar.MILLISECOND, 0);
-//		
-//		Calendar duration = Calendar.getInstance();
-//		duration.set(2020, 5, 2, 1, 0, 0);//1h
-//		doctor = new MedicalStaffWorkSchedularPOJO(
-//				Shift.FIRST, //MONDAY 
-//				Shift.NONE, 
-//				Shift.NONE, 
-//				Shift.NONE, 
-//				Shift.NONE, 
-//				Shift.NONE, 
-//				Shift.NONE, 
-//				duration);
-//		
-//		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
-//		
-//		assertEquals(schedule, actual);
-//	}
+	@Test
+	public void test3() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 13, 16, 0, 0);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		assertEquals(schedule, actual);
+	}
 	
 	@Test
 	public void test4() {
@@ -141,6 +141,133 @@ public class WorkDayTest {
 		expected.set(Calendar.MILLISECOND, 0);
 		
 		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void test6() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 13, 16, 10, 0);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		assertEquals(schedule, actual);
+	}
+	
+	@Test
+	public void test7() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 13, 15, 59, 59);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		Calendar exact = Calendar.getInstance();
+		exact.set(2020, 0, 13, 16, 0, 0);
+		exact.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(exact.getTime(), actual.getTime());
+	}
+	
+	@Test
+	public void test8() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 11, 15, 59, 59);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		Calendar exact = Calendar.getInstance();
+		exact.set(2020, 0, 13, 16, 0, 0);
+		exact.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(exact.getTime(), actual.getTime());
+	}
+	
+	@Test
+	public void test9() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 10, 1, 0, 0);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		Calendar exact = Calendar.getInstance();
+		exact.set(2020, 0, 13, 16, 0, 0);
+		exact.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(exact.getTime(), actual.getTime());
+	}
+	
+	@Test
+	public void test10() {
+		Calendar schedule = Calendar.getInstance();
+		schedule.set(2020, 0, 13, 20, 0, 0);
+		schedule.set(Calendar.MILLISECOND, 0);
+		
+		Calendar duration = Calendar.getInstance();
+		duration.set(2020, 5, 2, 1, 0, 0);//1h
+		doctor = new MedicalStaffWorkSchedularPOJO(
+				Shift.SECOND, //MONDAY 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				Shift.NONE, 
+				duration);
+		
+		Calendar actual = calculate.setWorkingDay(doctor, schedule, null);
+		
+		assertEquals(schedule.getTime(), actual.getTime());
 	}
 
 }

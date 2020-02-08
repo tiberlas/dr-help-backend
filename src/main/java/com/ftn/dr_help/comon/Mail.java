@@ -148,7 +148,8 @@ public class Mail {
 	    		appointment.getRoom().getName()+" number "+appointment.getRoom().getNumber()+
 	    		". Dr "+appointment.getDoctor().getFirstName()+
 	    		" "+appointment.getDoctor().getLastName()+" will examin you.";
-	    
+	    text += "\n";
+	    text += "Please log on to the website, check your pending appointments, and confirm, before comming. ";
 	    //NIKOLA OVDE TI DODAS LINK KA ODOBRAVANJU PREGLEDA
 //	    text += "http://localhost:3000/activate=" + sendTo;
 	    

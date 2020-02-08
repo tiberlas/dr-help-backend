@@ -19,6 +19,8 @@ public class PatientHistoryDTO {
 		if (date.split(":")[1].length() < 2) {
 			date = date.split(":")[0] + ":0" + date.split(":")[1];
 		}
+		
+		
 		this.date = date;
 		this.procedureType = procedureType;
 		this.doctor = doctor;
@@ -200,6 +202,8 @@ public class PatientHistoryDTO {
 	String room;
 	Double price;
 	Double discount;
+	
+	
 	
 	public Long getExaminationReportId() {
 		return examinationReportId;

@@ -16,6 +16,8 @@ public class AddAppointmentDTO {
 	private String date;
 	private String time;
 	private String patientId;
+	
+	
 	public String getDoctorId() {
 		return doctorId;
 	}

@@ -69,7 +69,7 @@ public class ProceduresTypePOJO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ProceduresTypePOJO(Long id, @NotBlank String name, double price, boolean isOperation, Date duration,
+	public ProceduresTypePOJO(Long id, String name, double price, boolean isOperation, Date duration,
 			List<AppointmentPOJO> appointment, ClinicPOJO clinic) {
 		super();
 		this.id = id;

@@ -3,6 +3,7 @@ package com.ftn.dr_help.service;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -60,7 +61,7 @@ public class AppointmentBlessingService {
 	@Autowired
 	private Mail mailSender;
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, isolation = Isolation.REPEATABLE_READ)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	public AppointmentInternalBlessedDTO blessing(AppointmentForSchedulingDTO requested, String adminMeil) {
 		/**
 		 * provera da li requested appointment odgovara sobi i doktoru; 
@@ -100,40 +101,55 @@ public class AppointmentBlessingService {
 			}
 
 			DoctorPOJO doctor = doctorRepository.findOneByEmail(requested.getDoctorEmail());
-			AppointmentPOJO appointment = appointmentRepository.getOne(requested.getAppointmentRequestedId());
 			NursePOJO nurse = freeNurse.getNurse();
+
+			AppointmentPOJO appointment = appointmentRepository.getOne(requested.getAppointmentRequestedId());
+			if(appointment.getRoom() != null) {
+				throw new Exception();
+			}
+
+			appointment.setDate(date);
+			appointment.setDoctor(doctor);
+			appointment.setNurse(nurse);
+			appointment.setRoom(room);
+			appointment.setDeleted(false);
 			
-			scheduleAndSendMail(appointment, doctor, nurse, room, date);
+			if(appointment.getStatus() == AppointmentStateEnum.REQUESTED) {
+				appointment.setStatus(AppointmentStateEnum.BLESSED);
+			} else {
+				appointment.setStatus(AppointmentStateEnum.APPROVED);
+			}
+			
+			
+			appointmentRepository.save(appointment); //update, moguci konflikt
+			
+			scheduleAndSendMail(appointment);
 			
 			return new AppointmentInternalBlessedDTO(AppointmentBlessing.BLESSED, "BLESSING RECIVED");
 		} catch(Exception e) {
+			e.printStackTrace();
 			return new AppointmentInternalBlessedDTO(AppointmentBlessing.REFFUSED, "NOT WORTHY");
 		}
 	}
 	
-	public void scheduleAndSendMail(AppointmentPOJO appointment, DoctorPOJO doctor, NursePOJO nurse, RoomPOJO room, Calendar date) {
+	@Transactional(propagation = Propagation.NEVER)
+	@Async
+	public void scheduleAndSendMail(AppointmentPOJO appointment) {
 		/*
-		 * saveing scheduled appointemnt and sending required mails
+		 * sending required mails
 		 * */
-		appointment.setDate(date);
-		appointment.setDoctor(doctor);
-		appointment.setNurse(nurse);
-		appointment.setRoom(room);
-		appointment.setDeleted(false);
 		if(appointment.getStatus() == AppointmentStateEnum.REQUESTED) {
 			//pacijent je trazio pregled, pa pitamo da li njemu odgovara
-			appointment.setStatus(AppointmentStateEnum.BLESSED);
 			
 			mailSender.sendAppointmentBlessedEmail(appointment);
 		} else {
 			//doktor je trazio pregled pa ih obavestavamo o ishodu
-			appointment.setStatus(AppointmentStateEnum.APPROVED);
 			
 			mailSender.sendAppointmentApprovedToDoctorEmail(appointment);
 			mailSender.sendAppointmentApprovedToNurseEmail(appointment);
 			mailSender.sendAppointmentApprovedToPatientEmail(appointment);
 		}			
-		appointmentRepository.save(appointment);
+		
 	}
 	
 	public void scheduleOperationAndSendMail(OperationPOJO operation, DoctorPOJO doctor1, DoctorPOJO doctor2, DoctorPOJO doctor3, RoomPOJO room, Calendar date) {

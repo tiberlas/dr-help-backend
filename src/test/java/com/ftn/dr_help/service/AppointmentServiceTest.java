@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ftn.dr_help.comon.DateConverter;
 import com.ftn.dr_help.controller.AppointmentController;
 import com.ftn.dr_help.dto.AppointmentListDTO;
 import com.ftn.dr_help.dto.PatientHistoryDTO;

@@ -16,6 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
 	 * */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins(com.ftn.dr_help.comon.CrossOrigin.domen);
+        registry.addMapping("/**").allowedOrigins("http://localhost:3000");
     }
 }

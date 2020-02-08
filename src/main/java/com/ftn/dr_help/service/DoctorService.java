@@ -98,8 +98,12 @@ public class DoctorService {
 	
 	@Autowired
 	private LeaveRequestRepository leaveRequestRepository;
+	
 	@Autowired 
 	private LeaveRequestService leaveRequestsService;
+	
+	@Autowired
+	private NurseService nurseService;
 	
 	public List<DoctorProfileDTO> findAll(Long clinicID) {
 		if(clinicID == null) {
@@ -340,8 +344,10 @@ public class DoctorService {
 		}
 		
 		HealthRecordPOJO healthRecord = patient.getHealthRecord();
-		List<AllergyPOJO> allergies= healthRecord.getAllergyList();
-		
+		List<AllergyPOJO> allergies = new ArrayList<AllergyPOJO> ();
+		if (healthRecord != null) {
+			allergies= healthRecord.getAllergyList();
+		}
 		ArrayList<String> list = new ArrayList<String>();
 		
 		for (AllergyPOJO allergy : allergies) {
@@ -352,12 +358,14 @@ public class DoctorService {
 		PatientHealthRecordDTO retVal = new PatientHealthRecordDTO();
 		
 		retVal.setBirthday(patient.getBirthday().getTime());
-		retVal.setBloodType(healthRecord.getBloodType());
-		retVal.setDiopter(healthRecord.getDiopter());
+		if (healthRecord != null) {
+			retVal.setHeight(healthRecord.getHeight());
+			retVal.setBloodType(healthRecord.getBloodType());
+			retVal.setDiopter(healthRecord.getDiopter());
+			retVal.setWeight(healthRecord.getWeight());
+		}
 		retVal.setFirstName(patient.getFirstName());
-		retVal.setHeight(healthRecord.getHeight());
 		retVal.setLastName(patient.getLastName());
-		retVal.setWeight(healthRecord.getWeight());
 		retVal.setAllergyList(list);
 		
 		System.out.println("FIRSTNAME: " + retVal.getFirstName() + "BIRTHDAY: " + retVal.getBirthday() + " BLOODTYPE: " + retVal.getBloodType() + "ALLERGYLIST: " + retVal.getAllergyList());
@@ -582,6 +590,33 @@ public class DoctorService {
 		}
 	}
 	
+	public List<MedicalStaffNameDTO> getSpecializedDoctorsWithoutNurse(Long procedureTypeId) {
+		try {
+			List<DoctorPOJO> finded = repository.findAllDoctorsWihtSpetialization(procedureTypeId);
+			List<MedicalStaffNameDTO> doctors = new ArrayList<>();
+			
+			if(finded == null) {
+				return doctors;
+			}
+			
+			for(DoctorPOJO doctor : finded) {
+				if(nurseService.hasANurseThatWorks(workSchedule.fromDoctor(doctor), doctor.getClinic().getId())) {
+					doctors.add(new MedicalStaffNameDTO(
+								doctor.getId(),
+								doctor.getFirstName(),
+								doctor.getLastName(),
+								doctor.getEmail()
+							));
+				}
+			}
+			
+			return doctors;
+			
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
 	public List<String> getAdminsMail(String drMail) {
 		List<String> adminMails = repository.findAllClinicAdminMails(drMail);
 		
@@ -760,7 +795,7 @@ public class DoctorService {
 		if(!doctor.getSunday().toString().equals("NONE")) { //ako radi petkom = Shift != NONE
 			BusinessDayHoursDTO businessDayHoursDTO = new BusinessDayHoursDTO();
 			List<Integer> day = new ArrayList<Integer>();	
-			day.add(7); //5 == Friday
+			day.add(0); //5 == Friday
 			businessDayHoursDTO.setDaysOfWeek(day);
 			if(doctor.getSunday().toString().equals("FIRST")) { //ako radi prvu smenu
 				businessDayHoursDTO.setStartTime("08:00");

@@ -75,7 +75,7 @@ public class AppointmentPOJO implements Serializable{
 	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	private ProceduresTypePOJO procedureType;
 	
-	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
+	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
 	private RoomPOJO room;
 	
 	@OneToOne(fetch = FetchType.LAZY)
@@ -88,6 +88,7 @@ public class AppointmentPOJO implements Serializable{
 	private boolean deleted;
 	
 	@Version
+	@Column(name="version", unique=false, nullable=false)
 	private Long version;
 	
 	public AppointmentPOJO() {

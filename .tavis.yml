@@ -1,0 +1,16 @@
+sudo: required
+language: java
+jdk: oraclejdk8
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: dr-help-backend

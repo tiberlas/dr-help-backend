@@ -64,28 +64,31 @@ public class NiceScheduleBeginning {
 				break;
 			}
 			
+			begin.set(Calendar.MINUTE, 0);
+			begin.set(Calendar.SECOND, 0);
+			begin.set(Calendar.MILLISECOND, 0);
 			
 			switch(shift) {
 			case FIRST:
+				begin.set(Calendar.HOUR_OF_DAY, 8);
 				begin.set(Calendar.HOUR, 8);
-				begin.set(Calendar.MINUTE, 0);
 				begin.set(Calendar.AM_PM, Calendar.AM);
 				return;
 			case SECOND:
+				begin.set(Calendar.HOUR_OF_DAY, 16);
 				begin.set(Calendar.HOUR, 4);
-				begin.set(Calendar.MINUTE, 0);
 				begin.set(Calendar.AM_PM, Calendar.PM);
 				return;
 			case THIRD:
+				begin.set(Calendar.HOUR_OF_DAY, 0);
 				begin.set(Calendar.HOUR, 0);
-				begin.set(Calendar.MINUTE, 0);
 				begin.set(Calendar.AM_PM, Calendar.AM);
 				return;
 			default:
 				//ovaj dan nije radan
 				begin.add(Calendar.DAY_OF_MONTH, 1);
 			}
-			
+		
 			++i;
 		}
 	}

@@ -14,6 +14,10 @@ public class AppointmentListDTO {
 		super();
 		appointmentList = new ArrayList<PatientHistoryDTO>();
 		possibleDates = new ArrayList<String> ();
+		possibleDoctors = new ArrayList<String>();
+		possibleClinics = new ArrayList<String>();
+		possibleTypes = new ArrayList<String>();
+		possibleStatuses = new ArrayList<String>();
 	}
 	
 	

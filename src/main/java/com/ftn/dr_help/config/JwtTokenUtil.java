@@ -166,7 +166,7 @@ public class JwtTokenUtil {
 		return request.getHeader(AUTH_HEADER);
 	}
 	
-	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
+	public Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
 		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}
 

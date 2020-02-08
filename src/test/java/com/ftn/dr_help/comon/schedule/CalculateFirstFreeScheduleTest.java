@@ -277,58 +277,122 @@ public class CalculateFirstFreeScheduleTest {
 		assertEquals("14.1.2020. 5:0 PM", reserved);
 	}
 	
-//	@Test
-//	public void testJumpFirstToThirdShiftShouldPass() {
-//		doctor.setTuesday(Shift.FIRST);
-//		doctor.setWednesday(Shift.THIRD);
-//		
-//		List<AbsenceInnerDTO> absence = new ArrayList<AbsenceInnerDTO>();
-//		
-//		dates.clear();
-//		try {
-//			begin = convert.stringToDate("2020-01-7 1:0");
-//			
-//			Calendar day = convert.stringToDate("2020-01-7 8:0");
-//			day.set(Calendar.AM_PM, Calendar.AM);
-//			dates.add(day.getTime());
-//			Calendar day1 = convert.stringToDate("2020-01-7 9:0");
-//			day1.set(Calendar.AM_PM, Calendar.AM);
-//			dates.add(day1.getTime());
-////			Calendar day2 = convert.stringToDate("2020-01-7 10:0");
-////			day2.set(Calendar.AM_PM, Calendar.AM);
-////			dates.add(day2.getTime());
-//			day1 = convert.stringToDate("2020-01-7 11:0");
-//			day1.set(Calendar.AM_PM, Calendar.AM);
-//			dates.add(day1.getTime());
-//			day1 = convert.stringToDate("2020-01-7 0:0");
-//			day1.set(Calendar.AM_PM, Calendar.PM);
-//			dates.add(day1.getTime());
-//			day = convert.stringToDate("2020-01-7 1:0");
-//			day.set(Calendar.AM_PM, Calendar.PM);
-//			dates.add(day.getTime());
-//			day1 = convert.stringToDate("2020-01-7 2:0");
-//			day1.set(Calendar.AM_PM, Calendar.PM);
-//			dates.add(day1.getTime());
-//			day1 = convert.stringToDate("2020-01-7 3:0");
-//			day1.set(Calendar.AM_PM, Calendar.PM);
-//			dates.add(day1.getTime());
-//			day1 = convert.stringToDate("2020-01-7 4:0");
-//			day1.set(Calendar.AM_PM, Calendar.PM);
-//			dates.add(day1.getTime());
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		Calendar finded = calculate.findFirstScheduleForDoctor(adapter.fromDoctor(doctor), begin, dates, absence);
-//		String reserved = convert.dateAndTimeToString(finded);
-//		if(finded.get(Calendar.AM_PM) == Calendar.AM) {
-//			reserved += " AM";
-//		} else {
-//			reserved += " PM";
-//		}
-//		
-//		assertEquals("8.1.2020. 0:0 AM", reserved);
-//	}
+	@Test
+	public void testJumpFirstToThirdShiftShouldPass() {
+		doctor.setTuesday(Shift.FIRST);
+		doctor.setWednesday(Shift.THIRD);
+		
+		List<AbsenceInnerDTO> absence = new ArrayList<AbsenceInnerDTO>();
+		
+		begin = Calendar.getInstance();
+		begin.set(2020, 0, 7, 13, 0, 0);
+		begin.set(Calendar.MILLISECOND, 0);
+		
+		dates.clear();
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		
+		day.set(2020, 0, 7, 8, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 9, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 10, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 11, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 12, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 13, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 14, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 15, 0, 0);
+		dates.add(day.getTime());
+		
+		Calendar finded = calculate.findFirstScheduleForDoctor(adapter.fromDoctor(doctor), begin, dates, absence);
+
+		Calendar expected = Calendar.getInstance();
+		expected.set(2020, 0, 8, 0, 0, 0);
+		expected.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(expected.getTime(), finded.getTime());
+	}
+		
+	@Test
+	public void testJumpFirstToThirdShiftShouldPass2() {
+		doctor.setTuesday(Shift.FIRST);
+		doctor.setWednesday(Shift.THIRD);
+		
+		List<AbsenceInnerDTO> absence = new ArrayList<AbsenceInnerDTO>();
+		
+		begin = Calendar.getInstance();
+		begin.set(2020, 0, 7, 13, 0, 0);
+		begin.set(Calendar.MILLISECOND, 0);
+		
+		dates.clear();
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		
+		day.set(2020, 0, 7, 8, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 9, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 11, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 12, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 13, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 14, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 15, 0, 0);
+		dates.add(day.getTime());
+		
+		Calendar finded = calculate.findFirstScheduleForDoctor(adapter.fromDoctor(doctor), begin, dates, absence);
+		
+		Calendar expected = Calendar.getInstance();
+		expected.set(2020, 0, 8, 0, 0, 0);
+		expected.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(expected.getTime(), finded.getTime());
+	}
+	
+	@Test
+	public void testJumpFirstToThirdShiftShouldPass3() {
+		doctor.setTuesday(Shift.FIRST);
+		doctor.setWednesday(Shift.THIRD);
+		
+		List<AbsenceInnerDTO> absence = new ArrayList<AbsenceInnerDTO>();
+		
+		begin = Calendar.getInstance();
+		begin.set(2020, 0, 7, 13, 0, 0);
+		begin.set(Calendar.MILLISECOND, 0);
+		
+		dates.clear();
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		
+		day.set(2020, 0, 7, 8, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 9, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 11, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 12, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 13, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 14, 20, 0);
+		dates.add(day.getTime());
+		
+		Calendar finded = calculate.findFirstScheduleForDoctor(adapter.fromDoctor(doctor), begin, dates, absence);
+		
+		Calendar expected = Calendar.getInstance();
+		expected.set(2020, 0, 8, 0, 0, 0);
+		expected.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(expected.getTime(), finded.getTime());
+	}
 	
 	@Test
 	public void testJumpFirstToThirdShiftVacationShouldPass() {
@@ -337,40 +401,26 @@ public class CalculateFirstFreeScheduleTest {
 		
 		List<AbsenceInnerDTO> absence = new ArrayList<AbsenceInnerDTO>();
 		
+		begin = Calendar.getInstance();
+		begin.set(2020, 0, 7, 13, 0, 0);
+		begin.set(Calendar.MILLISECOND, 0);
+		
 		dates.clear();
-		try {
-			begin = convert.stringToDate("2020-01-7 1:0");
-			
-			Calendar day = convert.stringToDate("2020-01-7 8:0");
-			day.set(Calendar.AM_PM, Calendar.AM);
-			dates.add(day.getTime());
-			Calendar day1 = convert.stringToDate("2020-01-7 9:0");
-			day1.set(Calendar.AM_PM, Calendar.AM);
-			dates.add(day1.getTime());
-			Calendar day2 = convert.stringToDate("2020-01-7 10:0");
-			day2.set(Calendar.AM_PM, Calendar.AM);
-			dates.add(day2.getTime());
-			day1 = convert.stringToDate("2020-01-7 11:0");
-			day1.set(Calendar.AM_PM, Calendar.AM);
-			dates.add(day1.getTime());
-			day1 = convert.stringToDate("2020-01-7 0:0");
-			day1.set(Calendar.AM_PM, Calendar.PM);
-			dates.add(day1.getTime());
-			day = convert.stringToDate("2020-01-7 1:0");
-			day.set(Calendar.AM_PM, Calendar.PM);
-			dates.add(day.getTime());
-			day1 = convert.stringToDate("2020-01-7 2:0");
-			day1.set(Calendar.AM_PM, Calendar.PM);
-			dates.add(day1.getTime());
-			day1 = convert.stringToDate("2020-01-7 3:0");
-			day1.set(Calendar.AM_PM, Calendar.PM);
-			dates.add(day1.getTime());
-			day1 = convert.stringToDate("2020-01-7 4:0");
-			day1.set(Calendar.AM_PM, Calendar.PM);
-			dates.add(day1.getTime());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		
+		day.set(2020, 0, 7, 8, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 9, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 11, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 12, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 13, 0, 0);
+		dates.add(day.getTime());
+		day.set(2020, 0, 7, 14, 0, 0);
+		dates.add(day.getTime());
 		
 		Calendar begin = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
@@ -380,14 +430,12 @@ public class CalculateFirstFreeScheduleTest {
 		absence.add(new AbsenceInnerDTO(begin.getTime(), end.getTime()));
 		
 		Calendar finded = calculate.findFirstScheduleForDoctor(adapter.fromDoctor(doctor), begin, dates, absence);
-		String reserved = convert.dateAndTimeToString(finded);
-		if(finded.get(Calendar.AM_PM) == Calendar.AM) {
-			reserved += " AM";
-		} else {
-			reserved += " PM";
-		}
 		
-		assertEquals("13.1.2020. 8:0 AM", reserved);
+		Calendar expected = Calendar.getInstance();
+		expected.set(2020, 0, 13, 8, 0, 0);
+		expected.set(Calendar.MILLISECOND, 0);
+		
+		assertEquals(expected.getTime(), finded.getTime());
 	}
 	
 	@Test

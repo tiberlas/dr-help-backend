@@ -43,7 +43,8 @@ public interface RoomRepository extends JpaRepository <RoomPOJO, Long>{
 			"and ca.email = ?1", nativeQuery = true)
 	List<RoomPOJO> findAllWithType(String adminEmail, Long proceduretypeId);
 	
-	@Query(value = "select * from room r where r.clinic_id= ?1 and r.proceduras_types_id= ?2", nativeQuery = true)
+	@Query(value = "select * from room r where r.clinic_id= ?1 and r.proceduras_types_id= ?2 and r.deleted = false", nativeQuery = true)
 	public List<RoomPOJO> getAllRoomFromClinicWithProcedure(Long clinicId, Long procedureId);
+	
 	
 }

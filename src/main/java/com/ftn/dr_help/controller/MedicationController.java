@@ -1,6 +1,5 @@
 package com.ftn.dr_help.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import com.ftn.dr_help.model.pojo.MedicationPOJO;
 import com.ftn.dr_help.service.MedicationService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping (value = "api/medication")
 public class MedicationController {
 

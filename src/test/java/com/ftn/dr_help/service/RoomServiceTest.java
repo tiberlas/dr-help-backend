@@ -17,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ftn.dr_help.model.pojo.ProceduresTypePOJO;
 import com.ftn.dr_help.model.pojo.RoomPOJO;
@@ -25,6 +27,7 @@ import com.ftn.dr_help.repository.AppointmentRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@TestPropertySource("classpath:application-test.properties")
 public class RoomServiceTest {
 	
 	@InjectMocks
@@ -113,6 +116,7 @@ public class RoomServiceTest {
 
 	
 	@Test
+	@Transactional
 	public void findFirstFreeInDateTest() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -131,6 +135,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeInDateTest2() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -149,6 +154,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeInDateTest3() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -167,6 +173,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeAfterTest() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -185,6 +192,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeAfterTest2() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -203,6 +211,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeBeforeTest() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -221,6 +230,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void findFirstFreeBeforeTest2() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -239,6 +249,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void testNextDay() {
 		try {
 			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
@@ -257,6 +268,7 @@ public class RoomServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void testNextDay2() {
 		try {
 			Calendar next = Calendar.getInstance();
@@ -271,6 +283,50 @@ public class RoomServiceTest {
 			begin.set(Calendar.MILLISECOND, 0);
 			String actual = roomService.findFirstFreeScheduleFromDate(room, begin);
 			String expected = "01/17/2020 03:32 AM";
+			
+			assertEquals(expected, actual);
+		} catch(Exception e) {
+			e.printStackTrace();
+			assertTrue(false);
+		}
+	}
+	
+	@Test
+	@Transactional
+	public void testNextDay3() {
+		try {
+			Calendar next = Calendar.getInstance();
+			next.set(2020, 0, 19, 1, 32, 0);
+			next.set(Calendar.MILLISECOND, 0);
+			schedules.add(next.getTime());
+			
+			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
+			
+			Calendar begin = Calendar.getInstance();
+			begin.set(2020, 0, 16, 22, 25, 0);
+			begin.set(Calendar.MILLISECOND, 0);
+			String actual = roomService.findFirstFreeScheduleFromDate(room, begin);
+			String expected = "01/17/2020 00:00 AM";
+			
+			assertEquals(expected, actual);
+		} catch(Exception e) {
+			e.printStackTrace();
+			assertTrue(false);
+		}
+	}
+	
+	@Test
+	@Transactional
+	public void testBefore() {
+		try {
+
+			Mockito.when(this.appointmentRepository.findScheduledDatesOfRoom(101l)).thenReturn(schedules);
+			
+			Calendar begin = Calendar.getInstance();
+			begin.set(2020, 0, 2, 22, 25, 0);
+			begin.set(Calendar.MILLISECOND, 0);
+			String actual = roomService.findFirstFreeScheduleFromDate(room, begin);
+			String expected = "01/02/2020 10:25 PM";
 			
 			assertEquals(expected, actual);
 		} catch(Exception e) {

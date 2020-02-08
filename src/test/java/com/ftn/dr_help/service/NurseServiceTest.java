@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.ftn.dr_help.dto.AbsenceInnerDTO;
 import com.ftn.dr_help.dto.NurseCheckIfAvailableInnerDTO;
 import com.ftn.dr_help.model.enums.Shift;
 import com.ftn.dr_help.model.pojo.NursePOJO;
@@ -86,7 +87,28 @@ public class NurseServiceTest {
 		
 		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(true, requestedSchedule);
 		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
+	
+	@Test
+	public void afterSchedulesTest() {
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 19, 20, 20, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
 		assertEquals(expected.isFree(), actual.isFree());
 	}
 	
@@ -107,7 +129,7 @@ public class NurseServiceTest {
 		newDate.set(Calendar.MILLISECOND, 0);
 		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(true, newDate);
 		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
 		assertEquals(expected.isFree(), actual.isFree());
 	}
 	
@@ -128,7 +150,7 @@ public class NurseServiceTest {
 		newDate.set(Calendar.MILLISECOND, 0);
 		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
 		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
 		assertEquals(expected.isFree(), actual.isFree());
 	}
 	
@@ -149,29 +171,158 @@ public class NurseServiceTest {
 		newDate.set(Calendar.MILLISECOND, 0);
 		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
 		
-		assertEquals(expected.getFirstFree(), actual.getFirstFree());
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
 		assertEquals(expected.isFree(), actual.isFree());
 	}
 	
-//	@Test
-//	public void SkipNonWorkingDaysTest() {
-//		
-//		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
-//		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
-//		
-//		Calendar requestedSchedule = Calendar.getInstance();
-//		requestedSchedule.set(2020, 1, 15, 23, 0, 0);
-//		requestedSchedule.set(Calendar.MILLISECOND, 0);
-//		
-//		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
-//		
-//		Calendar newDate = Calendar.getInstance();
-//		newDate.set(2020, 1, 18, 14, 10, 0);
-//		newDate.set(Calendar.MILLISECOND, 0);
-//		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
-//		
-//		assertEquals(expected.getFirstFree(), actual.getFirstFree());
-//		assertEquals(expected.isFree(), actual.isFree());
-//	}
+	@Test
+	public void SkipNonWorkingDaysTest() {
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(null);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 15, 23, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 19, 20, 20, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
+	
+	@Test
+	public void leaveRequestBeforeTest() {
+		
+		List<AbsenceInnerDTO> vacations = new ArrayList<>();
+		
+		Calendar vacationBegin = Calendar.getInstance();
+		Calendar vacationEnd = Calendar.getInstance();
+		
+		vacationBegin.set(2020, 1, 10, 0, 0, 0);
+		vacationEnd.set(2020, 1, 17, 0, 0, 0);
+		vacations.add(new AbsenceInnerDTO(vacationBegin.getTime(), vacationEnd.getTime()));
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(vacations);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 19, 20, 20, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
+	
+	@Test
+	public void leaveRequestBeforeTest2() {
+		
+		List<AbsenceInnerDTO> vacations = new ArrayList<>();
+		
+		Calendar vacationBegin = Calendar.getInstance();
+		Calendar vacationEnd = Calendar.getInstance();
+		
+		vacationBegin.set(2020, 1, 10, 0, 0, 0);
+		vacationEnd.set(2020, 1, 17, 0, 0, 0);
+		vacations.add(new AbsenceInnerDTO(vacationBegin.getTime(), vacationEnd.getTime()));
+		
+		reservedDates.remove(reservedDates.size()-1);
+		vacationBegin.set(2020, 1, 18, 12, 0, 0);
+		vacationEnd.set(Calendar.MILLISECOND, 0);
+		reservedDates.add(vacationBegin.getTime());
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(vacations);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 19, 20, 20, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
+	
+	@Test
+	public void leaveRequestBeforeANdAfterTest() {
+		
+		List<AbsenceInnerDTO> vacations = new ArrayList<>();
+		
+		Calendar vacationBegin = Calendar.getInstance();
+		Calendar vacationEnd = Calendar.getInstance();
+		
+		vacationBegin.set(2020, 1, 10, 0, 0, 0);
+		vacationEnd.set(2020, 1, 17, 0, 0, 0);
+		vacations.add(new AbsenceInnerDTO(vacationBegin.getTime(), vacationEnd.getTime()));
+		
+		vacationBegin.set(2020, 1, 19, 0, 0, 0);
+		vacationBegin.set(2020, 1, 21, 0, 0, 0);
+		vacations.add(new AbsenceInnerDTO(vacationBegin.getTime(), vacationEnd.getTime()));
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(vacations);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 19, 20, 20, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
+	
+	@Test
+	public void leaveRequestTest() {
+		
+		List<AbsenceInnerDTO> vacations = new ArrayList<>();
+		
+		Calendar vacationBegin = Calendar.getInstance();
+		Calendar vacationEnd = Calendar.getInstance();
+		
+		vacationBegin.set(2020, 1, 17, 0, 0, 0);
+		vacationEnd.set(2020, 1, 19, 0, 0, 0);
+		vacations.add(new AbsenceInnerDTO(vacationBegin.getTime(), vacationEnd.getTime()));
+		
+		Mockito.when(nurseRepository.findAllReservedAppointments(101L)).thenReturn(reservedDates);
+		Mockito.when(leaveRequestService.getAllNurseAbsence(101L)).thenReturn(vacations);
+		
+		Calendar requestedSchedule = Calendar.getInstance();
+		requestedSchedule.set(2020, 1, 18, 8, 0, 0);
+		requestedSchedule.set(Calendar.MILLISECOND, 0);
+		
+		NurseCheckIfAvailableInnerDTO actual = nurseService.checkSchedue(nurse, requestedSchedule, duration);
+		
+		Calendar newDate = Calendar.getInstance();
+		newDate.set(2020, 1, 21, 0, 0, 0);
+		newDate.set(Calendar.MILLISECOND, 0);
+		NurseCheckIfAvailableInnerDTO expected = new NurseCheckIfAvailableInnerDTO(false, newDate);
+		
+		assertEquals(expected.getFirstFree().getTime(), actual.getFirstFree().getTime());
+		assertEquals(expected.isFree(), actual.isFree());
+	}
 
 }

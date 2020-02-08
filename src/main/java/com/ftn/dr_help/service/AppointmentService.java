@@ -318,7 +318,7 @@ public class AppointmentService {
 		newAppointment.setProcedureType(doctor.getProcedureType());
 		newAppointment.setRoom(null);
 		newAppointment.setNurse(null);
-		newAppointment.setDiscount(0.0);
+		newAppointment.setDiscount(-1); //ne diraj
 		newAppointment.setExaminationReport(null);
 		
 		Shift shift = null;		
@@ -486,7 +486,13 @@ public class AppointmentService {
 	
 	@Transactional
 	public void delete (Long appointmentId) {
-		appointmentRepository.deleteAppointment (appointmentId);
+		AppointmentPOJO appointment = appointmentRepository.findOneById(appointmentId);
+		if (appointment.getStatus() != AppointmentStateEnum.APPROVED) {
+			appointmentRepository.deleteAppointment (appointmentId);
+		}
+		else {
+			appointmentRepository.cancelAppointment(appointmentId);
+		}
 	}
 	
 	public boolean doctorRequestAppointment(DoctorRequestAppointmentDTO request) {
@@ -511,7 +517,7 @@ public class AppointmentService {
 			
 			newRequested.setDate(date);
 			newRequested.setDeleted(false);
-			newRequested.setDiscount(0);
+			newRequested.setDiscount(-1);
 			newRequested.setDoctor(old.getDoctor());
 			newRequested.setPatient(old.getPatient());
 			newRequested.setProcedureType(old.getProcedureType());
@@ -914,17 +920,11 @@ public class AppointmentService {
 	public Boolean reserveAppointment (Long appointmentId, Long patientId) {
 		AppointmentPOJO appointment = appointmentRepository.getOne(appointmentId);
 
-//		try {
-//			TimeUnit.SECONDS.sleep(0);
-//			System.out.println("OI, I just woke up, egg");
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//			return false;
-//		}
 		if (appointment == null) {
 			return false;
 		}
 		
+	
 		if (appointment.getStatus() == AppointmentStateEnum.AVAILABLE) {
 			appointmentRepository.reserveAppointment(appointmentId, patientId);
 			return true;

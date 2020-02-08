@@ -36,11 +36,15 @@ public class MedicalStuffService {
 		
 		List<MedicalStaffInfoDTO> ret = new ArrayList<MedicalStaffInfoDTO>();
 		
-		ret.addAll(findDoctors(clinic_id));
-		ret.addAll(findNurses(clinic_id));
+		if (findDoctors(clinic_id) != null) {
+			ret.addAll(findDoctors(clinic_id));
+		}
+		if (findNurses(clinic_id) != null) {
+			ret.addAll(findNurses(clinic_id));
+		}
 		
 		if(ret.isEmpty()) {
-			return null;
+			return new ArrayList<MedicalStaffInfoDTO> ();
 		}
 		
 		return ret;
