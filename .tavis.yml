@@ -1,0 +1,30 @@
+language: java
+jdk: oraclejdk8
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+  - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+  - sudo service postgresql restart
+  - sleep 1
+
+addons:
+  sonarcloud:
+    organization: "tiberlas"
+    token:
+      secure: 2f7cb3b52edcebce6ff195acd3904d7991c58c86 # encrypted value of your token
+
+script:
+  - ./mvnw clean install -q -DskipTests=false -B
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: 
+    secure: a59bde74-e9e3-4173-a924-61d3eaa20fd8
+  app: dr-help-backend
