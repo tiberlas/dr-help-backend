@@ -1,4 +1,3 @@
-sudo: required
 language: java
 jdk: oraclejdk8
 
@@ -12,5 +11,5 @@ dist: trusty
 
 deploy:
   provider: heroku
-  api_key: $HEROKU_API_KEY
+  api_key: a59bde74-e9e3-4173-a924-61d3eaa20fd8
   app: dr-help-backend
