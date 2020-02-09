@@ -11,15 +11,15 @@ public class ClinicUpdate {
 	
 	public static void update(ClinicPOJO oldClinic, ClinicDTO newClinic) {
 		
-		if(newClinic.getAddress() != "") {
+		if(!newClinic.getAddress().equals("")) {
 			oldClinic.setAddress(newClinic.getAddress());
 		}
 		
-		if(newClinic.getDescription() != "") {
+		if(!newClinic.getDescription().equals("")) {
 			oldClinic.setDescription(newClinic.getDescription());
 		}
 		
-		if(newClinic.getName() != "") {
+		if(!newClinic.getName().equals("")) {
 			oldClinic.setName(newClinic.getName());
 		}
 		

@@ -47,7 +47,7 @@ public class JwtUserDetailsService implements UserDetailsService{
 	private EncapsulateUserDetailsInterface convertUser;
 	
 	private UserPOJO loadOneByEmail(String email) {
-		if(email == null || email.trim() == "") {
+		if(email == null || email.trim().equals("")) {
 			return null;
 		}
 		

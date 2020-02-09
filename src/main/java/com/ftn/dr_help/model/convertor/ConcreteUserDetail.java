@@ -18,22 +18,22 @@ public class ConcreteUserDetail implements ConcreteUserDetailInterface{
 	
 	@Override
 	public void changeTo(CentreAdministratorPOJO to, UserDetailDTO from) {
-		if(from.getFirstName() != null && from.getFirstName().trim() != "") {
+		if(from.getFirstName() != null && !from.getFirstName().trim().equals("")) {
 			to.setFirstName(from.getFirstName());
 		}
-		if(from.getLastName() != null && from.getLastName().trim() != "") {
+		if(from.getLastName() != null && from.getLastName().trim().equals("")) {
 			to.setLastName(from.getLastName());
 		}
-		if(from.getAddress() != null && from.getAddress().trim() != "") {
+		if(from.getAddress() != null && from.getAddress().trim().equals("")) {
 			to.setAddress(from.getAddress());
 		}
-		if(from.getState() != null && from.getState().trim() != "") {
+		if(from.getState() != null && from.getState().trim().equals("")) {
 			to.setState(from.getState());
 		}
-		if(from.getCity() != null && from.getCity().trim() != "") {
+		if(from.getCity() != null && from.getCity().trim().equals("")) {
 			to.setCity(from.getCity());
 		}
-		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim() != "") {
+		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim().equals("")) {
 			to.setPhoneNumber(from.getPhoneNumber());
 		}
 		
@@ -41,22 +41,22 @@ public class ConcreteUserDetail implements ConcreteUserDetailInterface{
 
 	@Override
 	public void changeTo(ClinicAdministratorPOJO to, UserDetailDTO from) {
-		if(from.getFirstName() != null && from.getFirstName().trim() != "") {
+		if(from.getFirstName() != null && from.getFirstName().trim().equals("")) {
 			to.setFirstName(from.getFirstName());
 		}
-		if(from.getLastName() != null && from.getLastName().trim() != "") {
+		if(from.getLastName() != null && from.getLastName().trim().equals("")) {
 			to.setLastName(from.getLastName());
 		}
-		if(from.getAddress() != null && from.getAddress().trim() != "") {
+		if(from.getAddress() != null && from.getAddress().trim().equals("")) {
 			to.setAddress(from.getAddress());
 		}
-		if(from.getState() != null && from.getState().trim() != "") {
+		if(from.getState() != null && from.getState().trim().equals("")) {
 			to.setState(from.getState());
 		}
-		if(from.getCity() != null && from.getCity().trim() != "") {
+		if(from.getCity() != null && from.getCity().trim().equals("")) {
 			to.setCity(from.getCity());
 		}
-		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim() != "") {
+		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim().equals("")) {
 			to.setPhoneNumber(from.getPhoneNumber());
 		}
 		
@@ -64,22 +64,22 @@ public class ConcreteUserDetail implements ConcreteUserDetailInterface{
 
 	@Override
 	public void changeTo(DoctorPOJO to, UserDetailDTO from) {
-		if(from.getFirstName() != null && from.getFirstName().trim() != "") {
+		if(from.getFirstName() != null && from.getFirstName().trim().equals("")) {
 			to.setFirstName(from.getFirstName());
 		}
-		if(from.getLastName() != null && from.getLastName().trim() != "") {
+		if(from.getLastName() != null && from.getLastName().trim().equals("")) {
 			to.setLastName(from.getLastName());
 		}
-		if(from.getAddress() != null && from.getAddress().trim() != "") {
+		if(from.getAddress() != null && from.getAddress().trim().equals("")) {
 			to.setAddress(from.getAddress());
 		}
-		if(from.getState() != null && from.getState().trim() != "") {
+		if(from.getState() != null && from.getState().trim().equals("")) {
 			to.setState(from.getState());
 		}
-		if(from.getCity() != null && from.getCity().trim() != "") {
+		if(from.getCity() != null && from.getCity().trim().equals("")) {
 			to.setCity(from.getCity());
 		}
-		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim() != "") {
+		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim().equals("")) {
 			to.setPhoneNumber(from.getPhoneNumber());
 		}
 		
@@ -87,22 +87,22 @@ public class ConcreteUserDetail implements ConcreteUserDetailInterface{
 
 	@Override
 	public void changeTo(NursePOJO to, UserDetailDTO from) {
-		if(from.getFirstName() != null && from.getFirstName().trim() != "") {
+		if(from.getFirstName() != null && from.getFirstName().trim().equals("")) {
 			to.setFirstName(from.getFirstName());
 		}
-		if(from.getLastName() != null && from.getLastName().trim() != "") {
+		if(from.getLastName() != null && from.getLastName().trim().equals("")) {
 			to.setLastName(from.getLastName());
 		}
-		if(from.getAddress() != null && from.getAddress().trim() != "") {
+		if(from.getAddress() != null && from.getAddress().trim().equals("")) {
 			to.setAddress(from.getAddress());
 		}
-		if(from.getState() != null && from.getState().trim() != "") {
+		if(from.getState() != null && from.getState().trim().equals("")) {
 			to.setState(from.getState());
 		}
-		if(from.getCity() != null && from.getCity().trim() != "") {
+		if(from.getCity() != null && from.getCity().trim().equals("")) {
 			to.setCity(from.getCity());
 		}
-		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim() != "") {
+		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim().equals("")) {
 			to.setPhoneNumber(from.getPhoneNumber());
 		}
 		
@@ -110,22 +110,22 @@ public class ConcreteUserDetail implements ConcreteUserDetailInterface{
 
 	@Override
 	public void changeTo(PatientPOJO to, UserDetailDTO from) {
-		if(from.getFirstName() != null && from.getFirstName().trim() != "") {
+		if(from.getFirstName() != null && from.getFirstName().trim().equals("")) {
 			to.setFirstName(from.getFirstName());
 		}
-		if(from.getLastName() != null && from.getLastName().trim() != "") {
+		if(from.getLastName() != null && from.getLastName().trim().equals("")) {
 			to.setLastName(from.getLastName());
 		}
-		if(from.getAddress() != null && from.getAddress().trim() != "") {
+		if(from.getAddress() != null && from.getAddress().trim().equals("")) {
 			to.setAddress(from.getAddress());
 		}
-		if(from.getState() != null && from.getState().trim() != "") {
+		if(from.getState() != null && from.getState().trim().equals("")) {
 			to.setState(from.getState());
 		}
-		if(from.getCity() != null && from.getCity().trim() != "") {
+		if(from.getCity() != null && from.getCity().trim().equals("")) {
 			to.setCity(from.getCity());
 		}
-		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim() != "") {
+		if(from.getPhoneNumber() != null && from.getPhoneNumber().trim().equals("")) {
 			to.setPhoneNumber(from.getPhoneNumber());
 		}
 		

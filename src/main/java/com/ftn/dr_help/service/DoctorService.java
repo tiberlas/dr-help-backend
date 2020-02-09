@@ -171,18 +171,18 @@ public class DoctorService {
 	}
 	
 	public DoctorPOJO findOne(Long id) {
-		if(id == null) {
+		try {
+			DoctorPOJO ret = repository.findById(id).orElse(null);
+			
+			//logic delete
+			if(ret.isDeleted()) {
+				return null;
+			}
+			
+			return ret;
+		}catch(Exception e) {
 			return null;
 		}
-		
-		DoctorPOJO ret = repository.findById(id).orElse(null);
-		
-		//logic delete
-		if(ret.isDeleted()) {
-			return null;
-		}
-		
-		return ret;
 	}
 	
 	public MedicalStaffProfileDTO save(UserDetailDTO doctor, String email) {

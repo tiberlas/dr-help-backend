@@ -3,7 +3,6 @@ package com.ftn.dr_help.service;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -132,8 +131,6 @@ public class AppointmentBlessingService {
 		}
 	}
 	
-	@Transactional(propagation = Propagation.NEVER)
-	@Async
 	public void scheduleAndSendMail(AppointmentPOJO appointment) {
 		/*
 		 * sending required mails
