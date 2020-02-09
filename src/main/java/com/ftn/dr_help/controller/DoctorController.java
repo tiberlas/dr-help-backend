@@ -41,6 +41,7 @@ import com.ftn.dr_help.repository.ClinicRepository;
 import com.ftn.dr_help.service.DoctorService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/doctors")
 public class DoctorController {
 

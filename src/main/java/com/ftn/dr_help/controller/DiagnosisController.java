@@ -21,6 +21,7 @@ import com.ftn.dr_help.service.DiagnosisService;
 
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping (value = "api/diagnoses")
 public class DiagnosisController {
 

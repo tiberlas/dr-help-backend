@@ -25,6 +25,7 @@ import com.ftn.dr_help.dto.TokenDTO;
 import com.ftn.dr_help.model.pojo.UserPOJO;
  
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping (value = "/api")
 public class LoginController {
 	

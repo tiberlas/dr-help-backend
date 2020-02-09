@@ -21,6 +21,7 @@ import com.ftn.dr_help.model.enums.LeaveRequestValidationEnum;
 import com.ftn.dr_help.service.LeaveRequestService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "/api/leave-requests")
 public class LeaveRequestController {
 	

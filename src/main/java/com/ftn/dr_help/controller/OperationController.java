@@ -26,6 +26,7 @@ import com.ftn.dr_help.dto.ThreeDoctorsIdDTO;
 import com.ftn.dr_help.service.OperationService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping (value = "api/operations")
 public class OperationController {
 

@@ -36,6 +36,7 @@ import com.ftn.dr_help.service.PatientService;
 import com.ftn.dr_help.service.PerscriptionService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/nurses")
 public class NurseController {
 	

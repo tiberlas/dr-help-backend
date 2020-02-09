@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-//@ComponentScan("com.ftn.dr_help.validation")
+@ComponentScan("com.ftn.dr_help.validation")
 public class WebConfig implements WebMvcConfigurer {
  
 	/*

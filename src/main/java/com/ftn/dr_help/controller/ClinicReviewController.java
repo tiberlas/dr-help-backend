@@ -14,6 +14,7 @@ import com.ftn.dr_help.service.ClinicReviewService;
 
 @RestController
 @RequestMapping(value = "api/clinic_raithing")
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 public class ClinicReviewController {
 
 	@Autowired

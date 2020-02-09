@@ -20,6 +20,7 @@ import com.ftn.dr_help.dto.MedicalStaffInfoDTO;
 import com.ftn.dr_help.service.MedicalStuffService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/medical+stuff")
 public class MedicalStuffControler {
 	

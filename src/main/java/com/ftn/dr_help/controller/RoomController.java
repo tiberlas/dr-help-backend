@@ -25,6 +25,7 @@ import com.ftn.dr_help.dto.RoomSearchDTO;
 import com.ftn.dr_help.service.RoomService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/rooms")
 public class RoomController {
 	

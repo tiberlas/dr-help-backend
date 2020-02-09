@@ -31,6 +31,7 @@ import com.ftn.dr_help.service.PatientService;
 
 @RestController
 @RequestMapping(value = "api/centreAdmins")
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @PreAuthorize("hasAuthority('CENTRE_ADMINISTRATOR')") //authority level on the hole controller
 public class CentreAdministratorController {
 	

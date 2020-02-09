@@ -22,6 +22,7 @@ import com.ftn.dr_help.model.enums.CreatingPredefinedAppointmentEnum;
 import com.ftn.dr_help.service.PredefinedAppointmentService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/predefined+appointments")
 public class PredefinedAppointmentController {
 	

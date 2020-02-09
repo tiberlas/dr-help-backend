@@ -16,6 +16,7 @@ import com.ftn.dr_help.dto.PatientHealthRecordDTO;
 import com.ftn.dr_help.service.PatientService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "/api/healthRecord")
 public class HealthRecordController {
 	

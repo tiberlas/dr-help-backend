@@ -16,6 +16,7 @@ import com.ftn.dr_help.dto.MedicalStaffReviewDTO;
 import com.ftn.dr_help.service.MedicalStaffReviewService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "api/medical_staff_raithing")
 public class MedicalStaffReviewController {
 	

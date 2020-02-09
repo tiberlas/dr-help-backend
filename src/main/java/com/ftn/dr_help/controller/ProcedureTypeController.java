@@ -23,6 +23,7 @@ import com.ftn.dr_help.dto.ProcedureTypeInfoDTO;
 import com.ftn.dr_help.service.ProcedureTypeService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping(value = "/api/procedure+types")
 public class ProcedureTypeController {
 

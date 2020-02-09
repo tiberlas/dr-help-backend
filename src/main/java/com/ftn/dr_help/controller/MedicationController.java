@@ -20,6 +20,7 @@ import com.ftn.dr_help.model.pojo.MedicationPOJO;
 import com.ftn.dr_help.service.MedicationService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping (value = "api/medication")
 public class MedicationController {
 

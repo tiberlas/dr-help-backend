@@ -17,6 +17,7 @@ import com.ftn.dr_help.model.pojo.UserRequestPOJO;
 import com.ftn.dr_help.service.UserRequestService;
 
 @RestController
+@CrossOrigin(origins = "https://dr-help.herokuapp.com")
 @RequestMapping (value = "/api")
 public class UserRequestController {
 
