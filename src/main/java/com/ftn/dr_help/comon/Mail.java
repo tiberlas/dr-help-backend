@@ -65,7 +65,7 @@ public class Mail {
         helper.setSubject("DrHelp account registration");
         String text = "Dear " + firstName + " " + lastName + "," + '\n';
         text += "your account request has been reviewed and accepted by our administrator staff. \n Please follow the link below to activate your account.";
-        text += "http://localhost:3000/activate=" + sendTo + "\n\n\n" + "Forever helping, drHelp.";
+        text += "https://dr-help-backend.herokuapp.com/activate=" + sendTo + "\n\n\n" + "Forever helping, drHelp.";
         helper.setText(text);
 
        javaMailSender.send(msg);
