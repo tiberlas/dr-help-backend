@@ -14,7 +14,7 @@ addons:
   sonarcloud:
     organization: "tiberlas"
     token:
-      secure: 2f7cb3b52edcebce6ff195acd3904d7991c58c86 # encrypted value of your token
+      secure: 11e87ca9c9f68ccb8cc345a8a636f9d2334bc7c0 # encrypted value of your token
 
 script:
   - ./mvnw clean install -q -DskipTests=false -B
