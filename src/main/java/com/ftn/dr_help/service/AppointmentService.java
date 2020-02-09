@@ -359,6 +359,15 @@ public class AppointmentService {
 		
 		List<AppointmentPOJO> appointments = appointmentRepository.getDoctorsAppointments(doctor.getId(), startTime, endTime);
 		
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("Before deciding: ");
+//		System.out.println(doctor.getId());
+//		System.out.println(startTime.getTime());
+//		System.out.println(endTime.getTime());
+//		System.out.println("");
+//		System.out.println("");
+		
 		if (appointments.size() == 0) {
 			appointmentRepository.save(newAppointment);
 			return true;
@@ -864,6 +873,10 @@ public class AppointmentService {
 		AppointmentPOJO appointment = appointmentRepository.getOne(appointmentId);
 
 		if (appointment == null) {
+			return false;
+		}
+		
+		if (appointment.isDeleted()) {
 			return false;
 		}
 		

@@ -7,7 +7,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -298,7 +301,7 @@ public class DoctorService {
 	}
 	
 	public DoctorProfilePreviewDTO getProfilePreview (Long doctorId, Long patientId) {
-		DoctorPOJO doctor = repository.getOne(doctorId);
+		DoctorPOJO doctor = getIfNotDeleted(doctorId);
 		if (doctor == null) {
 			return null;
 		}
@@ -309,11 +312,8 @@ public class DoctorService {
 		
 		DoctorProfilePreviewDTO retVal = new DoctorProfilePreviewDTO (doctor);
 		List<AppointmentPOJO> appointments = appointmentRepository.getPatientsPastAppointments(patientId, doctorId);
-//		System.out.println("DoctorId: " + doctorId);
-//		System.out.println("PatientId: " + patientId);
 		if (appointments.size() > 0) {
 			retVal.setHaveInteracted(true);
-//			System.out.println("Intereagovali su ranije");
 			DoctorReviewPOJO djp = doctorReviewRepository.getPatientsReview(patientId, doctorId);
 			if (djp != null) {
 				retVal.setMyRating(djp.getRating().toString());
@@ -323,8 +323,20 @@ public class DoctorService {
 		if (rating != null) {
 			retVal.setRating(rating.toString());
 		}
-//		System.out.println("Nisu imali interakcije");
+
 		return retVal;
+	}
+	
+//	@Transactional (isolation = Isolation.READ_UNCOMMITTED)
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	public DoctorPOJO getIfNotDeleted (Long doctorID) {
+		DoctorPOJO doc = repository.getOne(doctorID);
+		
+		if (!doc.isDeleted()) {
+			return doc;
+		}
+		
+		return null;
 	}
 	
 	public PatientHealthRecordDTO findPatientHealthRecord(Long appointmentId) {
@@ -518,18 +530,22 @@ public class DoctorService {
 	
 	@Transactional
 	public void addReview (Long doctorId, Long patientId, Integer review) {
-		DoctorReviewPOJO newReview = new DoctorReviewPOJO(repository.getOne(doctorId), patientRepository.getOne(patientId), review);
-		DoctorReviewPOJO oldReview = doctorReviewRepository.getPatientsReview(patientId, doctorId);
-		if (review == 0) {
-			doctorReviewRepository.delete(oldReview);
+		try {
+			DoctorReviewPOJO newReview = new DoctorReviewPOJO(repository.getOne(doctorId), patientRepository.getOne(patientId), review);
+			DoctorReviewPOJO oldReview = doctorReviewRepository.getPatientsReview(patientId, doctorId);
+			if (review == 0) {
+				doctorReviewRepository.delete(oldReview);
+				return;
+			}
+			else if (oldReview == null) {
+				System.out.println("Dodajem novi review");
+				doctorReviewRepository.save(newReview);
+			}
+			else {
+				doctorReviewRepository.updateReview(review, patientId, doctorId);
+			}
+		}catch(Exception e) {
 			return;
-		}
-		else if (oldReview == null) {
-			System.out.println("Dodajem novi review");
-			doctorReviewRepository.save(newReview);
-		}
-		else {
-			doctorReviewRepository.updateReview(review, patientId, doctorId);
 		}
 	}
 	

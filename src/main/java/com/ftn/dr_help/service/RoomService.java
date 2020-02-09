@@ -456,7 +456,7 @@ public class RoomService {
 		return findFirstFreeScheduleFromDate(room, begin);
 	}
 	
-	@Transactional(readOnly = true,  propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true,  propagation = Propagation.SUPPORTS)
 	public String findFirstFreeScheduleFromDate(Long roomId, Calendar begin) {
 		try {
 			RoomPOJO room = repository.getOne(roomId);
@@ -468,7 +468,7 @@ public class RoomService {
 		
 	}
 	
-	@Transactional(readOnly = true,  propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true,  propagation = Propagation.SUPPORTS)
 	public Calendar findFirstFreeScheduleFromDateInRawformat(RoomPOJO room, Calendar begin) {
 		/**
 		 * nadje priv slobodan termin za sobu od trenutka (begin)
@@ -529,7 +529,7 @@ public class RoomService {
 	
 	}
 	
-	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public String findFirstFreeScheduleFromDate(RoomPOJO room, Calendar begin) {
 			
 		Calendar finded = findFirstFreeScheduleFromDateInRawformat(room, begin);

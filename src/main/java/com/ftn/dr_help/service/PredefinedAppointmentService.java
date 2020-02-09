@@ -151,6 +151,7 @@ public class PredefinedAppointmentService {
 	    				CreatingPredefinedAppointmentEnum.APPROVED);
 
 		} catch(Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

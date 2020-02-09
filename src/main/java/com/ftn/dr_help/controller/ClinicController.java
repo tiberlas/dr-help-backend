@@ -176,7 +176,7 @@ public class ClinicController {
 			ClinicPreviewDTO temp = new ClinicPreviewDTO (c);
 			if (!filter.equals ("unfiltered")) {
 				Double price = procedureTypeService.getPrice(c.getId(), filter);
-				temp.setPrice((price == null) ? ("-") : (Double.toString(price) + " rsd"));
+				temp.setPrice((price == null) ? ("-") : (Double.toString(price)));
 			}
 			Float averageReview = clinicReviewRepository.getAverageReview(temp.getId());
 			if (averageReview != null) {

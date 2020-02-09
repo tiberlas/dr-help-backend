@@ -55,7 +55,7 @@ public class Mail {
     }
 	
 	
-	@Async
+	//@Async
 	public void sendAcceptEmail(String sendTo, String firstName, String lastName) throws MessagingException, IOException  {
 		
 		MimeMessage msg = javaMailSender.createMimeMessage();
@@ -71,7 +71,7 @@ public class Mail {
        javaMailSender.send(msg);
 	}
 
-	@Async
+	//@Async
 	public void sendDeclineEmail(String sendTo, String description, String firstName, String lastName) {
 
 	    SimpleMailMessage msg = new SimpleMailMessage();

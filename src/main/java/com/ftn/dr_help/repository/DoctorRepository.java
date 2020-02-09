@@ -4,7 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +15,10 @@ import com.ftn.dr_help.model.pojo.DoctorPOJO;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<DoctorPOJO, Long> {
+	
+	
+	@Query (value = "select * from doctors d where d.id = ?1", nativeQuery = true)
+	public DoctorPOJO findOne(Long id);
 	
 	public List<DoctorPOJO> findAllByClinic_id(Long id);
 	

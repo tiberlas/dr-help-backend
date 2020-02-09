@@ -21,7 +21,6 @@ import com.ftn.dr_help.model.enums.LeaveRequestValidationEnum;
 import com.ftn.dr_help.service.LeaveRequestService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/api/leave-requests")
 public class LeaveRequestController {
 	

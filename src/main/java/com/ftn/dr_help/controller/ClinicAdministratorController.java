@@ -32,7 +32,6 @@ import com.ftn.dr_help.service.ClinicService;
 
 @RestController
 @RequestMapping(value = "api/clinicAdmins")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ClinicAdministratorController {
 
 		@Autowired

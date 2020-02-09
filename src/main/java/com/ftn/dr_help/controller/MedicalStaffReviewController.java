@@ -17,7 +17,6 @@ import com.ftn.dr_help.service.MedicalStaffReviewService;
 
 @RestController
 @RequestMapping(value = "api/medical_staff_raithing")
-@CrossOrigin(origins = "http://localhost:3000")
 public class MedicalStaffReviewController {
 	
 	@Autowired

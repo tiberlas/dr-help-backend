@@ -51,22 +51,22 @@ public class ClinicAdminAproveAppointmentTestTest {
 		try {
 		driver.get("http://localhost:3000/login");
 	    driver.findElement(By.id("tb_email")).click();
-	    driver.findElement(By.id("tb_email")).sendKeys("admin@admin");
+	    driver.findElement(By.id("tb_email")).sendKeys("admin1@maildrop.cc");
 	    driver.findElement(By.id("tb_password")).click();
 	    driver.findElement(By.id("tb_password")).sendKeys("1234");
-	    driver.findElement(By.id("tb_submit")).click();
+	    driver.findElement(By.id("tb_login")).click();
 	    
-	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Requests")));
+	    (new WebDriverWait(driver, 20)).until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Requests")));
 	    driver.findElement(By.linkText("Requests")).click();   
 	    
 	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("appointment_id")));
 	    driver.findElement(By.id("appointment_id")).click();
 	    
-	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("clinic_name")));
-	    driver.findElement(By.id("clinic_name")).click();
+//	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("clinic_name")));
+//	    driver.findElement(By.id("clinic_name")).click();
 	    
-	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("table_row_23")));
-	    driver.findElement(By.id("table_row_23")).click();
+	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("table_row_14")));
+	    driver.findElement(By.id("table_row_14")).click();
 	    
 	    (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.id("search_rooms")));
 	    driver.findElement(By.id("search_rooms")).click();

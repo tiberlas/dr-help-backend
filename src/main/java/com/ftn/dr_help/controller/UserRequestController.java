@@ -18,7 +18,6 @@ import com.ftn.dr_help.service.UserRequestService;
 
 @RestController
 @RequestMapping (value = "/api")
-@CrossOrigin (origins = "http://localhost:3000")
 public class UserRequestController {
 
 	@Autowired

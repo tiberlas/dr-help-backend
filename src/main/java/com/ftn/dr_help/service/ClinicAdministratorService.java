@@ -104,10 +104,14 @@ public class ClinicAdministratorService {
 		}
 		ClinicAdministratorPOJO current = clinicAdministratorRepository.findOneByEmail(email);
 		
+		
 		if(current == null)
 			return null;
+		System.out.println("current salje stvar " + current.getAddress());
 		
 		convertor.changeTo(current, admin);
+		
+		System.out.println("posle changeTO" + current.getAddress());
 		clinicAdministratorRepository.save(current);
 				
 		return new ClinicAdminProfileDTO(current);

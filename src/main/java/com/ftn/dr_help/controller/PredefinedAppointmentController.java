@@ -23,7 +23,6 @@ import com.ftn.dr_help.service.PredefinedAppointmentService;
 
 @RestController
 @RequestMapping(value = "api/predefined+appointments")
-@CrossOrigin(origins = "http://localhost:3000")
 public class PredefinedAppointmentController {
 	
 	@Autowired

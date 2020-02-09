@@ -3,6 +3,7 @@ package com.ftn.dr_help.service;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.ftn.dr_help.model.pojo.AppointmentPOJO;
 import com.ftn.dr_help.model.pojo.ClinicPOJO;
 import com.ftn.dr_help.model.pojo.DoctorPOJO;
 import com.ftn.dr_help.model.pojo.NursePOJO;
+import com.ftn.dr_help.model.pojo.PatientPOJO;
 import com.ftn.dr_help.model.pojo.ProceduresTypePOJO;
 import com.ftn.dr_help.model.pojo.RoomPOJO;
 import com.ftn.dr_help.repository.AppointmentRepository;
@@ -52,6 +54,8 @@ public class AppointmentServiceTest {
 	private AppointmentPOJO app2;
 	private AppointmentPOJO app3;
 	
+	private DoctorPOJO d1;
+	
 	@Before
 	public void setUp () {
 		app1 = new AppointmentPOJO();
@@ -72,7 +76,7 @@ public class AppointmentServiceTest {
 		temp.set(Calendar.HOUR_OF_DAY, 1);
 		pt1.setDuration(temp.getTime());
 		app1.setProcedureType(pt1);
-		DoctorPOJO d1 = new DoctorPOJO();
+		d1 = new DoctorPOJO();
 		d1.setFirstName("Pera");
 		d1.setLastName("Peric");
 		d1.setId(1L);
@@ -93,6 +97,9 @@ public class AppointmentServiceTest {
 		r1.setNumber(5);
 		app1.setRoom(r1);
 		app1.setDiscount(5);
+		PatientPOJO pat1 = new PatientPOJO ();
+		pat1.setId(1L);
+		app1.setPatient(pat1);
 		
 		app2 = new AppointmentPOJO();
 		app2.setId(19L);
@@ -174,213 +181,234 @@ public class AppointmentServiceTest {
 //	public AppointmentListDTO getPredefinedAppointments(String doctorId, String procedureTypeId, String clinicId,
 //			String date) {
 	
+//	@Test
+//	public void getAllPredefinedAppointmentsShouldPass () {
+//		
+//		Mockito.when(this.appointmentRepository.getAllPredefinedAppointments()).thenReturn(appointmentList);
+//		
+//		List<String> expectedDates = new ArrayList<String> ();
+//		expectedDates.add("unfiltered");
+//		expectedDates.add("03.04.2020.");
+//		List<String> expectedDoctors = new ArrayList<String> ();
+//		expectedDoctors.add("unfiltered");
+//		expectedDoctors.add("Pera Peric");
+//		expectedDoctors.add("Đorđe Bogdanovic");
+//		List<String> expectedClinics = new ArrayList<String> ();
+//		expectedClinics.add("unfiltered");
+//		expectedClinics.add("Klinika zdravog uma"); 
+//		List<String> expectedTypes = new ArrayList<String> ();
+//		expectedTypes.add("unfiltered");
+//		expectedTypes.add("psihoanaliza");
+//		List<PatientHistoryDTO> expectedAppointments = new ArrayList<PatientHistoryDTO> ();
+//		expectedAppointments.add(new PatientHistoryDTO(app1));
+//		expectedAppointments.add(new PatientHistoryDTO(app2));
+//		expectedAppointments.add(new PatientHistoryDTO(app3));
+//		AppointmentListDTO expected = new AppointmentListDTO ();
+//		expected.setPossibleDates(expectedDates);
+//		expected.setPossibleDoctors(expectedDoctors);
+//		expected.setPossibleClinics(expectedClinics);
+//		expected.setPossibleTypes(expectedTypes);
+//		expected.setAppointmentList(expectedAppointments);
+//		
+//		AppointmentListDTO actual = appointmentService.getPredefinedAppointments("unfiltered", "unfiltered", "unfiltered", "unfiltered");
+//		AppointmentListDTO actual1 = appointmentService.getPredefinedAppointments("Pera Peric", "unfiltered", "unfiltered", "unfiltered");
+//		
+//		assertEquals(3, actual.getAppointmentList().size());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getProcedureType(), actual.getAppointmentList().get(0).getProcedureType());
+//		assertEquals(expected.getAppointmentList().get(1).getProcedureType(), actual.getAppointmentList().get(1).getProcedureType());
+//		assertEquals(expected.getAppointmentList().get(2).getProcedureType(), actual.getAppointmentList().get(2).getProcedureType());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getAppointmentId(), actual.getAppointmentList().get(0).getAppointmentId());
+//		assertEquals(expected.getAppointmentList().get(1).getAppointmentId(), actual.getAppointmentList().get(1).getAppointmentId());
+//		assertEquals(expected.getAppointmentList().get(2).getAppointmentId(), actual.getAppointmentList().get(2).getAppointmentId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getClinicId(), actual.getAppointmentList().get(0).getClinicId());
+//		assertEquals(expected.getAppointmentList().get(1).getClinicId(), actual.getAppointmentList().get(1).getClinicId());
+//		assertEquals(expected.getAppointmentList().get(2).getClinicId(), actual.getAppointmentList().get(2).getClinicId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getClinicName(), actual.getAppointmentList().get(0).getClinicName());
+//		assertEquals(expected.getAppointmentList().get(1).getClinicName(), actual.getAppointmentList().get(1).getClinicName());
+//		assertEquals(expected.getAppointmentList().get(2).getClinicName(), actual.getAppointmentList().get(2).getClinicName());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDate(), actual.getAppointmentList().get(0).getDate());
+//		assertEquals(expected.getAppointmentList().get(1).getDate(), actual.getAppointmentList().get(1).getDate());
+//		assertEquals(expected.getAppointmentList().get(2).getDate(), actual.getAppointmentList().get(2).getDate());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDiscount(), actual.getAppointmentList().get(0).getDiscount());
+//		assertEquals(expected.getAppointmentList().get(1).getDiscount(), actual.getAppointmentList().get(1).getDiscount());
+//		assertEquals(expected.getAppointmentList().get(2).getDiscount(), actual.getAppointmentList().get(2).getDiscount());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDoctor(), actual.getAppointmentList().get(0).getDoctor());
+//		assertEquals(expected.getAppointmentList().get(1).getDoctor(), actual.getAppointmentList().get(1).getDoctor());
+//		assertEquals(expected.getAppointmentList().get(2).getDoctor(), actual.getAppointmentList().get(2).getDoctor());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDoctorId(), actual.getAppointmentList().get(0).getDoctorId());
+//		assertEquals(expected.getAppointmentList().get(1).getDoctorId(), actual.getAppointmentList().get(1).getDoctorId());
+//		assertEquals(expected.getAppointmentList().get(2).getDoctorId(), actual.getAppointmentList().get(2).getDoctorId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getRoom(), actual.getAppointmentList().get(0).getRoom());
+//		assertEquals(expected.getAppointmentList().get(1).getRoom(), actual.getAppointmentList().get(1).getRoom());
+//		assertEquals(expected.getAppointmentList().get(2).getRoom(), actual.getAppointmentList().get(2).getRoom());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getPrice(), actual.getAppointmentList().get(0).getPrice());
+//		assertEquals(expected.getAppointmentList().get(1).getPrice(), actual.getAppointmentList().get(1).getPrice());
+//		assertEquals(expected.getAppointmentList().get(2).getPrice(), actual.getAppointmentList().get(2).getPrice());
+//		
+//		assertEquals(2, actual.getPossibleClinics().size());
+//		
+//		assertEquals(expected.getPossibleClinics().get(0), actual.getPossibleClinics().get(0));
+//		assertEquals(expected.getPossibleClinics().get(1), actual.getPossibleClinics().get(1));
+//		
+//		assertEquals(2, actual.getPossibleDates().size());
+//		
+//		assertEquals(expected.getPossibleDates().get(0), actual.getPossibleDates().get(0));
+//		assertEquals(expected.getPossibleDates().get(1), actual.getPossibleDates().get(1));
+//		
+//		assertEquals(3, actual.getPossibleDoctors().size());
+//		
+//		assertEquals(expected.getPossibleDoctors().get(0), actual.getPossibleDoctors().get(0));
+//		assertEquals(expected.getPossibleDoctors().get(1), actual.getPossibleDoctors().get(1));
+//		assertEquals(expected.getPossibleDoctors().get(2), actual.getPossibleDoctors().get(2));
+//		
+//		assertEquals(2, actual.getPossibleTypes().size());
+//		
+//		assertEquals(expected.getPossibleTypes().get(0), actual.getPossibleTypes().get(0));
+//		assertEquals(expected.getPossibleTypes().get(1), actual.getPossibleTypes().get(1));
+//
+//		assertEquals(2, actual1.getAppointmentList().size());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getProcedureType(), actual1.getAppointmentList().get(0).getProcedureType());
+//		assertEquals(expected.getAppointmentList().get(2).getProcedureType(), actual1.getAppointmentList().get(1).getProcedureType());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getAppointmentId(), actual1.getAppointmentList().get(0).getAppointmentId());
+//		assertEquals(expected.getAppointmentList().get(2).getAppointmentId(), actual1.getAppointmentList().get(1).getAppointmentId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getClinicId(), actual1.getAppointmentList().get(0).getClinicId());
+//		assertEquals(expected.getAppointmentList().get(2).getClinicId(), actual1.getAppointmentList().get(1).getClinicId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getClinicName(), actual1.getAppointmentList().get(0).getClinicName());
+//		assertEquals(expected.getAppointmentList().get(2).getClinicName(), actual1.getAppointmentList().get(1).getClinicName());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDate(), actual1.getAppointmentList().get(0).getDate());
+//		assertEquals(expected.getAppointmentList().get(2).getDate(), actual1.getAppointmentList().get(1).getDate());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDiscount(), actual1.getAppointmentList().get(0).getDiscount());
+//		assertEquals(expected.getAppointmentList().get(2).getDiscount(), actual1.getAppointmentList().get(1).getDiscount());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDoctor(), actual1.getAppointmentList().get(0).getDoctor());
+//		assertEquals(expected.getAppointmentList().get(2).getDoctor(), actual1.getAppointmentList().get(1).getDoctor());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getDoctorId(), actual1.getAppointmentList().get(0).getDoctorId());
+//		assertEquals(expected.getAppointmentList().get(2).getDoctorId(), actual1.getAppointmentList().get(1).getDoctorId());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getRoom(), actual1.getAppointmentList().get(0).getRoom());
+//		assertEquals(expected.getAppointmentList().get(2).getRoom(), actual1.getAppointmentList().get(1).getRoom());
+//		
+//		assertEquals(expected.getAppointmentList().get(0).getPrice(), actual1.getAppointmentList().get(0).getPrice());
+//		assertEquals(expected.getAppointmentList().get(2).getPrice(), actual1.getAppointmentList().get(1).getPrice());
+//		
+//	}
+//	
+//	@Test
+//	public void ReserveAppointmentShouldPass () {
+//
+//		this.app2.setStatus(AppointmentStateEnum.BLESSED);
+//		this.app3.setStatus(AppointmentStateEnum.APPROVED);
+//		
+//		Mockito.when(this.appointmentRepository.getOne(15L)).thenReturn(app1);
+//		Mockito.when(this.appointmentRepository.getOne(16L)).thenReturn(null);
+//		Mockito.when(this.appointmentRepository.getOne(19L)).thenReturn(app2);
+//		Mockito.when(this.appointmentRepository.getOne(34L)).thenReturn(app3);
+//		
+//		Boolean expected1 = true;
+//		Boolean expected2 = false;
+//		Boolean expected3 = false;
+//		Boolean expected4 = false;
+//		
+//		Boolean actual1 = appointmentService.reserveAppointment(15L, 1L);
+//		Boolean actual2 = appointmentService.reserveAppointment(16L, 1L);
+//		Boolean actual3 = appointmentService.reserveAppointment(19L, 1L);
+//		Boolean actual4 = appointmentService.reserveAppointment(34L, 1L);
+//		
+//		assertEquals(expected1, actual1);
+//		assertEquals(expected2, actual2);
+//		assertEquals(expected3, actual3);
+//		assertEquals(expected4, actual4);
+//		
+//	}
+//	
+//	
+//	@Test
+//	public void addPatientDefinedAppointmentShouldPass () {
+//		
+//		app1.setStatus(AppointmentStateEnum.REQUESTED);
+//		app2.setStatus(AppointmentStateEnum.DOCTOR_REQUESTED_APPOINTMENT);
+//		app3.setStatus(AppointmentStateEnum.APPROVED);
+//		
+//		app2.setDoctor(app1.getDoctor());
+//		app3.setDoctor(app1.getDoctor());
+//		
+//		List<AppointmentPOJO> list1 = new ArrayList<AppointmentPOJO> ();
+//		list1.add(app1);
+//		List<AppointmentPOJO> list2 = new ArrayList<AppointmentPOJO> ();
+//		list2.add(app1);
+//		list2.add(app2);
+//		list2.add(app3);
+//		List<AppointmentPOJO> list3 = new ArrayList<AppointmentPOJO> ();
+//		
+//		Calendar calendarMin1 = Calendar.getInstance();
+//		Calendar calendarMax1 = Calendar.getInstance();
+//		calendarMin1.set(Calendar.YEAR, 2020);
+//		calendarMin1.set(Calendar.MONTH, 3);
+//		calendarMin1.set(Calendar.DAY_OF_MONTH, 3);
+//		calendarMin1.set(Calendar.HOUR_OF_DAY, 4);
+//		calendarMin1.set(Calendar.MINUTE, 0);
+//		calendarMin1.set(Calendar.SECOND, 0);
+//
+//		calendarMax1.set(Calendar.YEAR, 2020);
+//		calendarMax1.set(Calendar.MONTH, 3);
+//		calendarMax1.set(Calendar.DAY_OF_MONTH, 3);
+//		calendarMax1.set(Calendar.HOUR_OF_DAY, 5);
+//		calendarMax1.set(Calendar.MINUTE, 0);
+//		calendarMax1.set(Calendar.SECOND, 0);
+//		
+//		Mockito.when(this.doctorRepository.getOne(1L)).thenReturn(app1.getDoctor());
+//		Mockito.when(this.appointmentRepository.getDoctorsAppointments(1L, calendarMin1, calendarMax1)).thenReturn(list2);
+//	
+//		Boolean expected1 = true;
+//		
+//		Boolean actual1 = false;
+//		
+//		try {
+//			actual1 = appointmentService.addAppointment(1L, "2020-04-05 04:00:00", 1L);
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		assertEquals(expected1, actual1);
+//		
+//	}
+//	
 	@Test
-	public void getAllPredefinedAppointmentsShouldPass () {
-		
-		Mockito.when(this.appointmentRepository.getAllPredefinedAppointments()).thenReturn(appointmentList);
-		
-		List<String> expectedDates = new ArrayList<String> ();
-		expectedDates.add("unfiltered");
-		expectedDates.add("03.04.2020.");
-		List<String> expectedDoctors = new ArrayList<String> ();
-		expectedDoctors.add("unfiltered");
-		expectedDoctors.add("Pera Peric");
-		expectedDoctors.add("Đorđe Bogdanovic");
-		List<String> expectedClinics = new ArrayList<String> ();
-		expectedClinics.add("unfiltered");
-		expectedClinics.add("Klinika zdravog uma"); 
-		List<String> expectedTypes = new ArrayList<String> ();
-		expectedTypes.add("unfiltered");
-		expectedTypes.add("psihoanaliza");
-		List<PatientHistoryDTO> expectedAppointments = new ArrayList<PatientHistoryDTO> ();
-		expectedAppointments.add(new PatientHistoryDTO(app1));
-		expectedAppointments.add(new PatientHistoryDTO(app2));
-		expectedAppointments.add(new PatientHistoryDTO(app3));
-		AppointmentListDTO expected = new AppointmentListDTO ();
-		expected.setPossibleDates(expectedDates);
-		expected.setPossibleDoctors(expectedDoctors);
-		expected.setPossibleClinics(expectedClinics);
-		expected.setPossibleTypes(expectedTypes);
-		expected.setAppointmentList(expectedAppointments);
-		
-		AppointmentListDTO actual = appointmentService.getPredefinedAppointments("unfiltered", "unfiltered", "unfiltered", "unfiltered");
-		AppointmentListDTO actual1 = appointmentService.getPredefinedAppointments("Pera Peric", "unfiltered", "unfiltered", "unfiltered");
-		
-		assertEquals(3, actual.getAppointmentList().size());
-		
-		assertEquals(expected.getAppointmentList().get(0).getProcedureType(), actual.getAppointmentList().get(0).getProcedureType());
-		assertEquals(expected.getAppointmentList().get(1).getProcedureType(), actual.getAppointmentList().get(1).getProcedureType());
-		assertEquals(expected.getAppointmentList().get(2).getProcedureType(), actual.getAppointmentList().get(2).getProcedureType());
-		
-		assertEquals(expected.getAppointmentList().get(0).getAppointmentId(), actual.getAppointmentList().get(0).getAppointmentId());
-		assertEquals(expected.getAppointmentList().get(1).getAppointmentId(), actual.getAppointmentList().get(1).getAppointmentId());
-		assertEquals(expected.getAppointmentList().get(2).getAppointmentId(), actual.getAppointmentList().get(2).getAppointmentId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getClinicId(), actual.getAppointmentList().get(0).getClinicId());
-		assertEquals(expected.getAppointmentList().get(1).getClinicId(), actual.getAppointmentList().get(1).getClinicId());
-		assertEquals(expected.getAppointmentList().get(2).getClinicId(), actual.getAppointmentList().get(2).getClinicId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getClinicName(), actual.getAppointmentList().get(0).getClinicName());
-		assertEquals(expected.getAppointmentList().get(1).getClinicName(), actual.getAppointmentList().get(1).getClinicName());
-		assertEquals(expected.getAppointmentList().get(2).getClinicName(), actual.getAppointmentList().get(2).getClinicName());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDate(), actual.getAppointmentList().get(0).getDate());
-		assertEquals(expected.getAppointmentList().get(1).getDate(), actual.getAppointmentList().get(1).getDate());
-		assertEquals(expected.getAppointmentList().get(2).getDate(), actual.getAppointmentList().get(2).getDate());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDiscount(), actual.getAppointmentList().get(0).getDiscount());
-		assertEquals(expected.getAppointmentList().get(1).getDiscount(), actual.getAppointmentList().get(1).getDiscount());
-		assertEquals(expected.getAppointmentList().get(2).getDiscount(), actual.getAppointmentList().get(2).getDiscount());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDoctor(), actual.getAppointmentList().get(0).getDoctor());
-		assertEquals(expected.getAppointmentList().get(1).getDoctor(), actual.getAppointmentList().get(1).getDoctor());
-		assertEquals(expected.getAppointmentList().get(2).getDoctor(), actual.getAppointmentList().get(2).getDoctor());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDoctorId(), actual.getAppointmentList().get(0).getDoctorId());
-		assertEquals(expected.getAppointmentList().get(1).getDoctorId(), actual.getAppointmentList().get(1).getDoctorId());
-		assertEquals(expected.getAppointmentList().get(2).getDoctorId(), actual.getAppointmentList().get(2).getDoctorId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getRoom(), actual.getAppointmentList().get(0).getRoom());
-		assertEquals(expected.getAppointmentList().get(1).getRoom(), actual.getAppointmentList().get(1).getRoom());
-		assertEquals(expected.getAppointmentList().get(2).getRoom(), actual.getAppointmentList().get(2).getRoom());
-		
-		assertEquals(expected.getAppointmentList().get(0).getPrice(), actual.getAppointmentList().get(0).getPrice());
-		assertEquals(expected.getAppointmentList().get(1).getPrice(), actual.getAppointmentList().get(1).getPrice());
-		assertEquals(expected.getAppointmentList().get(2).getPrice(), actual.getAppointmentList().get(2).getPrice());
-		
-		assertEquals(2, actual.getPossibleClinics().size());
-		
-		assertEquals(expected.getPossibleClinics().get(0), actual.getPossibleClinics().get(0));
-		assertEquals(expected.getPossibleClinics().get(1), actual.getPossibleClinics().get(1));
-		
-		assertEquals(2, actual.getPossibleDates().size());
-		
-		assertEquals(expected.getPossibleDates().get(0), actual.getPossibleDates().get(0));
-		assertEquals(expected.getPossibleDates().get(1), actual.getPossibleDates().get(1));
-		
-		assertEquals(3, actual.getPossibleDoctors().size());
-		
-		assertEquals(expected.getPossibleDoctors().get(0), actual.getPossibleDoctors().get(0));
-		assertEquals(expected.getPossibleDoctors().get(1), actual.getPossibleDoctors().get(1));
-		assertEquals(expected.getPossibleDoctors().get(2), actual.getPossibleDoctors().get(2));
-		
-		assertEquals(2, actual.getPossibleTypes().size());
-		
-		assertEquals(expected.getPossibleTypes().get(0), actual.getPossibleTypes().get(0));
-		assertEquals(expected.getPossibleTypes().get(1), actual.getPossibleTypes().get(1));
-
-		assertEquals(2, actual1.getAppointmentList().size());
-		
-		assertEquals(expected.getAppointmentList().get(0).getProcedureType(), actual1.getAppointmentList().get(0).getProcedureType());
-		assertEquals(expected.getAppointmentList().get(2).getProcedureType(), actual1.getAppointmentList().get(1).getProcedureType());
-		
-		assertEquals(expected.getAppointmentList().get(0).getAppointmentId(), actual1.getAppointmentList().get(0).getAppointmentId());
-		assertEquals(expected.getAppointmentList().get(2).getAppointmentId(), actual1.getAppointmentList().get(1).getAppointmentId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getClinicId(), actual1.getAppointmentList().get(0).getClinicId());
-		assertEquals(expected.getAppointmentList().get(2).getClinicId(), actual1.getAppointmentList().get(1).getClinicId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getClinicName(), actual1.getAppointmentList().get(0).getClinicName());
-		assertEquals(expected.getAppointmentList().get(2).getClinicName(), actual1.getAppointmentList().get(1).getClinicName());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDate(), actual1.getAppointmentList().get(0).getDate());
-		assertEquals(expected.getAppointmentList().get(2).getDate(), actual1.getAppointmentList().get(1).getDate());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDiscount(), actual1.getAppointmentList().get(0).getDiscount());
-		assertEquals(expected.getAppointmentList().get(2).getDiscount(), actual1.getAppointmentList().get(1).getDiscount());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDoctor(), actual1.getAppointmentList().get(0).getDoctor());
-		assertEquals(expected.getAppointmentList().get(2).getDoctor(), actual1.getAppointmentList().get(1).getDoctor());
-		
-		assertEquals(expected.getAppointmentList().get(0).getDoctorId(), actual1.getAppointmentList().get(0).getDoctorId());
-		assertEquals(expected.getAppointmentList().get(2).getDoctorId(), actual1.getAppointmentList().get(1).getDoctorId());
-		
-		assertEquals(expected.getAppointmentList().get(0).getRoom(), actual1.getAppointmentList().get(0).getRoom());
-		assertEquals(expected.getAppointmentList().get(2).getRoom(), actual1.getAppointmentList().get(1).getRoom());
-		
-		assertEquals(expected.getAppointmentList().get(0).getPrice(), actual1.getAppointmentList().get(0).getPrice());
-		assertEquals(expected.getAppointmentList().get(2).getPrice(), actual1.getAppointmentList().get(1).getPrice());
-		
-	}
+	public void testInsertNewAppointment () {
 	
-	@Test
-	public void ReserveAppointmentShouldPass () {
-
-		this.app2.setStatus(AppointmentStateEnum.BLESSED);
-		this.app3.setStatus(AppointmentStateEnum.APPROVED);
+		Mockito.when(this.doctorRepository.getOne(1L)).thenReturn(d1);
 		
-		Mockito.when(this.appointmentRepository.getOne(15L)).thenReturn(app1);
-		Mockito.when(this.appointmentRepository.getOne(16L)).thenReturn(null);
-		Mockito.when(this.appointmentRepository.getOne(19L)).thenReturn(app2);
-		Mockito.when(this.appointmentRepository.getOne(34L)).thenReturn(app3);
-		
-		Boolean expected1 = true;
-		Boolean expected2 = false;
-		Boolean expected3 = false;
-		Boolean expected4 = false;
-		
-		Boolean actual1 = appointmentService.reserveAppointment(15L, 1L);
-		Boolean actual2 = appointmentService.reserveAppointment(16L, 1L);
-		Boolean actual3 = appointmentService.reserveAppointment(19L, 1L);
-		Boolean actual4 = appointmentService.reserveAppointment(34L, 1L);
-		
-		assertEquals(expected1, actual1);
-		assertEquals(expected2, actual2);
-		assertEquals(expected3, actual3);
-		assertEquals(expected4, actual4);
-		
-	}
-	
-	
-	@Test
-	public void addPatientDefinedAppointmentShouldPass () {
-		
-		app1.setStatus(AppointmentStateEnum.REQUESTED);
-		app2.setStatus(AppointmentStateEnum.DOCTOR_REQUESTED_APPOINTMENT);
-		app3.setStatus(AppointmentStateEnum.APPROVED);
-		
-		app2.setDoctor(app1.getDoctor());
-		app3.setDoctor(app1.getDoctor());
-		
-		List<AppointmentPOJO> list1 = new ArrayList<AppointmentPOJO> ();
-		list1.add(app1);
-		List<AppointmentPOJO> list2 = new ArrayList<AppointmentPOJO> ();
-		list2.add(app1);
-		list2.add(app2);
-		list2.add(app3);
-		List<AppointmentPOJO> list3 = new ArrayList<AppointmentPOJO> ();
-		
-		Calendar calendarMin1 = Calendar.getInstance();
-		Calendar calendarMax1 = Calendar.getInstance();
-		calendarMin1.set(Calendar.YEAR, 2020);
-		calendarMin1.set(Calendar.MONTH, 3);
-		calendarMin1.set(Calendar.DAY_OF_MONTH, 3);
-		calendarMin1.set(Calendar.HOUR_OF_DAY, 4);
-		calendarMin1.set(Calendar.MINUTE, 0);
-		calendarMin1.set(Calendar.SECOND, 0);
-
-		calendarMax1.set(Calendar.YEAR, 2020);
-		calendarMax1.set(Calendar.MONTH, 3);
-		calendarMax1.set(Calendar.DAY_OF_MONTH, 3);
-		calendarMax1.set(Calendar.HOUR_OF_DAY, 5);
-		calendarMax1.set(Calendar.MINUTE, 0);
-		calendarMax1.set(Calendar.SECOND, 0);
-		
-		Mockito.when(this.doctorRepository.getOne(1L)).thenReturn(app1.getDoctor());
-		Mockito.when(this.appointmentRepository.getDoctorsAppointments(1L, calendarMin1, calendarMax1)).thenReturn(list2);
-	
-		Boolean expected1 = true;
-		
-		Boolean actual1 = false;
-		
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+		String dateString = sdf.format(app1.getDate().getTime());
+//				
+		Boolean returnValue1 = null;
 		try {
-			actual1 = appointmentService.addAppointment(1L, "2020-04-05 04:00:00", 1L);
+			returnValue1 = appointmentService.addAppointment(app1.getDoctor().getId(), dateString, app1.getPatient().getId());
+		
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		assertEquals(expected1, actual1);
+		assertEquals (true, returnValue1);
 		
 	}
+	
 	
 }

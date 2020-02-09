@@ -119,7 +119,7 @@ public class AutomaticallyReserveRooms {
 	}
 	
 	@Scheduled(cron="59 59 23 * * ?")
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	public void runOperationsAtMidnight() {
 		
 		List<OperationPOJO> operations = operationRepository.getAllOperationRequests();

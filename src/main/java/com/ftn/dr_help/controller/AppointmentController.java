@@ -39,7 +39,6 @@ import com.ftn.dr_help.service.DoctorService;
 import com.ftn.dr_help.service.PatientService;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping (value = "api/appointments/")
 public class AppointmentController {

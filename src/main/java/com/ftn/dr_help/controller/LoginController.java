@@ -26,7 +26,6 @@ import com.ftn.dr_help.model.pojo.UserPOJO;
  
 @RestController
 @RequestMapping (value = "/api")
-@CrossOrigin (origins="http://localhost:3000")
 public class LoginController {
 	
 	/*

@@ -21,7 +21,6 @@ import com.ftn.dr_help.service.MedicalStuffService;
 
 @RestController
 @RequestMapping(value = "api/medical+stuff")
-@CrossOrigin(origins = "http://localhost:3000")
 public class MedicalStuffControler {
 	
 	@Autowired
