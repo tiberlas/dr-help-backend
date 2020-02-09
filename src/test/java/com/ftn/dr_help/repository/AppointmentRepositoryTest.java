@@ -241,16 +241,6 @@ public class AppointmentRepositoryTest {
 		List<AppointmentPOJO> actualList2 = appointmentRepository.getDoctorsAppointments(2L, startTime, endTime);
 		List<AppointmentPOJO> actualList3 = appointmentRepository.getDoctorsAppointments(420L, startTime, endTime);
 		
-//		System.out.println("");
-//		System.out.println("");
-//		System.out.println("Apointments: ");
-//		for(AppointmentPOJO a : actualList) {
-////			String s = "Appointment: " + a.getDate().getTime() + "; " + a.getProcedureType().getName();
-////			System.out.println(s);// + "; Procedure type: " + a.getProcedureType().getName() + "; Patient: " + a.getPatient().getFirstName());
-//		}
-//		System.out.println("");
-//		System.out.println("");
-		
 		assertEquals (1, actualList1.size());
 		assertEquals ("Fri Apr 03 10:00:00 CEST 2020", actualList1.get(0).getDate().getTime().toString());
 		assertEquals ("General exam", actualList1.get(0).getProcedureType().getName());
@@ -300,7 +290,6 @@ public class AppointmentRepositoryTest {
 		before = appointmentRepository.getAllRequests();
 		
 		before.get(0).setStatus(AppointmentStateEnum.APPROVED);
-		//before.get(0).setVersion(1l);
 		entityManager.merge(before.get(0));
 		
 		after = appointmentRepository.getAllRequests();
