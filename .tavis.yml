@@ -13,13 +13,12 @@ before_install:
 addons:
   sonarcloud:
     organization: "tiberlas"
-    token:
-      secure: 11e87ca9c9f68ccb8cc345a8a636f9d2334bc7c0 # encrypted value of your token
+    token: ${SONAR_TOKEN}
 
 script:
   - ./mvnw clean install -q -DskipTests=false -B
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=tiberlas_dr-help-backend
 
 dist: trusty
 
